@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>BI Login</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'fonts/Linearicons-Free-v1.0.0/icon-font.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animate/animate.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/css-hamburgers/hamburgers.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/animsition/css/animsition.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/select2/select2.min.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'vendor/daterangepicker/daterangepicker.css' %}">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
+	<link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+<!--===============================================================================================-->
+    <div id="snackbar" >Snake</div>
+    <div class="loader" ></div>
+</head>
+<body>
+
+	<div class="limiter">
+		<div class="container-login100" style="background-image: url({% static 'images/bg-01.jpg' %});">
+			<div class="wrap-login100 p-t-30 p-b-50">
+				<span class="login-page-title p-b-41" style="font-size: 100px;">
+					Carzen
+				</span>
+				<span class="login100-form-title p-b-41">
+					{% if login_page %}Account Login{% else %}Password Reset{% endif %}
+				</span>
+				<form class="login100-form validate-form p-b-33 p-t-5" id="login_form">
+                    {% csrf_token %}
+
+                    <span class="justify-content-center d-flex mt-1">
+                        <label class="mb-2" style="font-family: Ubuntu-Bold;">I am: </label>
+                    </span>
+                    <span class="align-content-center d-flex" style="height: 60px;">
+                        <li class="login_type_btn type_selector mb-3 w-50 active" style="border-radius: 0; font-size: 20px;">MECHANIC</li>
+                        <li class="login_type_btn type_selector mb-3 w-50" style="border-radius: 0; font-size: 20px;">CAR OWNER</li>
+                    </span>
+					<div class="wrap-input100 validate-input" data-validate = "Enter username">
+						<input class="input100" type="text" name="username" placeholder="User name">
+						<span class="focus-input100" data-placeholder="&#xe82a;"></span>
+					</div>
+                {% if login_page %}
+					<div class="wrap-input100 validate-input" data-validate="Enter password">
+						<input class="input100" type="password" name="pass" placeholder="Password">
+						<span class="focus-input100" data-placeholder="&#xe80f;"></span>
+					</div>
+                {% endif %}
+					<div class="container-login100-form-btn m-t-32">
+						<button class="login100-form-btn submit-button">
+							{% if login_page %}Login{% else %}Reset password{% endif %}
+						</button>
+					</div>
+				</form>
+            {% if login_page %}
+                <a class="d-block" style="text-align: end; color: #fff;" href='/forgot_password/'>
+                    Forgot password?
+                </a>
+            {% else %}
+                <a class="d-block" style="text-align: end; color: #fff;"  href="/login/">
+                    Back to login
+                </a>
+            {% endif %}
+			</div>
+		</div>
+	</div>
+
+
+	<div id="dropDownSelect1"></div>
+    <div class="loader" ></div>
+
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/jquery/jquery-3.2.1.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/animsition/js/animsition.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/bootstrap/js/popper.js' %}"></script>
+	<script src="{% static 'vendor/bootstrap/js/bootstrap.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/select2/select2.min.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/daterangepicker/moment.min.js' %}"></script>
+	<script src="{% static 'vendor/daterangepicker/daterangepicker.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'vendor/countdowntime/countdowntime.js' %}"></script>
+<!--===============================================================================================-->
+	<script src="{% static 'js/main.js' %}"></script>
+	<script src="{% static 'js/utilities.js' %}"></script>
+	<script src="{% static 'js/login.js' %}"></script>
+<script>
+    window.csrfToken = "{{ csrf_token }}"
+    $(document).on('click', '.type_selector', function (e) {
+        $('.type_selector').removeClass('active');
+        $(this).addClass('active');
+    });
+</script>
+    <style>
+
+    </style>
+</body>
+</html>

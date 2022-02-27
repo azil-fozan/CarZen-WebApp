@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}
+    <title>Receipts</title>
+{% endblock %}
+
+{% block top_bar %}
+    {% include "top_bar.html" with page_headding=page_headding %}
+{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{% static 'js/receipts.js' %}"></script>
+{% endblock %}
+
+{% block page_contents %}
+    <div id="customers_select_html" style="display: none">
+        <select class="form-control form-style mr-3 w-25" name="customer_id" x-placement="Select Customer" required>
+        {% for cust in customers %}
+            <option value="{{ cust.id }}">{{ cust.name }}{% if cust.reference %} | {% endif %}{{ cust.reference }}</option>
+        {% empty %}
+            <option value="" disabled selected>No Customers Found</option>
+        {% endfor %}
+        </select>
+    </div>
+    {% include "responsive_datatable.html" %}
+{% endblock %}

@@ -1,0 +1,38 @@
+<!-- responsive datatable -->
+    <div>
+        <span class="float-left">
+            <form class="form-inline search-bar-wrap" id="search_{{ table_headding_single|lower }}">
+                <input class="form-control form-style header-search" required id="searchQuery" type="text"  placeholder="Search {{ table_headding_single }} by id, customer" aria-label="Search">
+                <button class="search-{{ table_headding_single|lower }}-button mx-2" type="submit">
+                    {% include 'search_icon.svg' %}
+                </button>
+                <i class="fas fa-times cancel-search mr-2" style="display: none;"></i>
+           </form>
+        </span>
+        <span class="justify-content-end d-flex float-right">
+            {% if show_print_button %}
+                <form method="post" action="/dashboards/export_receipt/" target="_blank">
+                    {% csrf_token %}
+                    <input type="hidden" name="receipt_id" value="{{ receipt_id }}">
+                    <button type="submit" class="btn btn-primary mb-3 mr-3" id="export_receipt">Export Receipt</button>
+                </form>
+            {% endif %}
+            <li class="btn btn-primary refresh_{{ table_headding_plural|lower }} mb-3">Refresh {{ table_headding_plural }}</li>
+            <div class="mb-3 ml-3 mr-3 d-flex align-items-center add_{{ table_headding_single|lower }}" titl="Add {{ table_headding_single }}">
+                <i class="fas fa-plus" style="font-size: 25px;color: Green;"></i>
+            </div>
+        </span>
+    </div>
+    <div class="{{table_headding_single|lower}}_form_html"></div>
+    <table id="{{table_headding_single}}s_table" class="table-scroll">
+        <thead>
+            <tr class="table-head">
+                {% for col_name in column_names %}
+                    <th class="{% if forloop.counter == 1 %}column1{% elif forloop.counter == 2 %}{% else %}text-center{% endif %}">{{ col_name }}</th>
+                {% endfor %}
+                <th class="text-center edit-col-2"></th>
+            </tr>
+        </thead>
+        <tbody id="{{table_headding_single|lower}}s_data_div" class="scrollable" style="max-height: 70vh">
+        </tbody>
+    </table>

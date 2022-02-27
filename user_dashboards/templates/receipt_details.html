@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}
+    <title>Receipt - {{ receipt_id }}</title>
+{% endblock %}
+
+{% block top_bar %}
+    {% include "top_bar.html" with page_headding=page_headding %}
+{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{% static 'js/receipt_details.js' %}"></script>
+{% endblock %}
+
+{% block page_contents %}
+    <input type="hidden" id="receipt_id" value="{{ receipt_id }}">
+    <div id="products_select_html" style="display: none">
+        <select class="form-control form-style mr-3 w-25" name="product_id">
+        {% for prod in products %}
+            <option value="{{ prod.id }}">{{ prod.name }}</option>
+        {% endfor %}
+        </select>
+    </div>
+    {% include "responsive_datatable.html" %}
+
+{% endblock %}

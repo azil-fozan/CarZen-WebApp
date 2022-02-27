@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}
+    <title>{{table_headding_plural}} List</title>
+{% endblock %}
+
+{% block top_bar %}
+    {% include "top_bar.html" with page_headding=page_headding %}
+{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="{% static 'js/product_details.js' %}"></script>
+{% endblock %}
+
+{% block page_contents %}
+    <input type="hidden" id="receipt_id" value="{{ receipt_id }}">
+    {% include "responsive_datatable.html" %}
+
+{% endblock %}

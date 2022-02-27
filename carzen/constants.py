@@ -1,0 +1,1 @@
+DEFAULT_PASSWORD = 'new_pass123'
