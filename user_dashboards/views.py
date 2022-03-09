@@ -10,7 +10,7 @@ from openpyxl import load_workbook
 from openpyxl.styles.borders import Border, Side
 from num2words import num2words
 
-from carzen.utilities import execute_read_query
+from BI.utilities import execute_read_query
 from user_dashboards.models import *
 from datetime import datetime
 from user_dashboards.constants import *

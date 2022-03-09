@@ -5,19 +5,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 PROJECT_DIR = os.path.dirname(__file__)
 
+SECRET_KEY = '$60^1ruaokuo*ddn(ntp$*69e30x)44c+v#-ug^yh49#)5#-rz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'carzen', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'BI', 'static')
 
 ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
-AUTH_USER_MODEL = 'carzen.User'
+AUTH_USER_MODEL = 'BI.User'
 
 
 # Application definition
@@ -49,7 +50,7 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            # os.path.join(BASE_DIR, 'carzen/templates'),
+            # os.path.join(BASE_DIR, 'BI/templates'),
             os.path.join(STATIC_ROOT, 'images', 'icons'),
         ],
         'APP_DIRS': True,
@@ -73,19 +74,22 @@ STATICFILES_FINDERS = (
 #     os.path.join(BASE_DIR, "static"),
 # )
 
-WSGI_APPLICATION = 'carzen.wsgi.application'
+WSGI_APPLICATION = 'BI.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+
+AWS_S3_ACCESS_KEY = 'AKIA2TFUEQZ4X2O7WCLY'
+AWS_S3_SECRET_KEY = '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'
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'azil_owned',
         'USER': 'azil',
-        'PASSWORD': 'to_be_set',
-        'HOST': 'to_be_set',
+        'PASSWORD': 'azilfozan',
+        'HOST': 'bi-prod-db.c3dqortvphcm.ap-south-1.rds.amazonaws.com',
         'PORT': '3306'
     }
 }

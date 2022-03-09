@@ -1,4 +1,4 @@
-from carzen.decorators import login_required
+from BI.decorators import login_required
 from . import views
 from django.conf.urls import url
 

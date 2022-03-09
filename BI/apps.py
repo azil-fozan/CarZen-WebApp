@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
-APP_NAME = 'carzen'
+APP_NAME = 'BI'
 
 class BIConfig(AppConfig):
     name = APP_NAME

@@ -1,4 +1,4 @@
-from carzen import settings
+from BI import settings
 from user_dashboards.models import Bill
 from tempfile import NamedTemporaryFile
 import boto3

@@ -1,5 +1,5 @@
 """
-WSGI config for carzen project.
+WSGI config for Carzen project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -13,7 +13,7 @@ import django
 from django.core.wsgi import get_wsgi_application
 
 sys.path.append('/home/ubuntu/sites/prodsite/Inventorymanagement')
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'carzen.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BI.settings')
 
 application = get_wsgi_application()
 

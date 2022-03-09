@@ -1,4 +1,4 @@
-"""carzen URL Configuration
+"""CARZEN URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.1/topics/http/urls/
@@ -18,12 +18,13 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.conf.urls.static import static
 from django.urls import re_path, include, path
-from carzen import views, settings
-from carzen.decorators import login_required
+from BI import views, settings
+from BI.decorators import login_required
 
 urlpatterns = [
     re_path(r'^$', views.Login.as_view()),
     re_path(r'^login/$', views.Login.as_view()),
+    re_path(r'^signup/$', views.SignUp.as_view()),
     re_path(r'^forgot_password/$', views.ForgotPassword.as_view()),
     re_path(r'^logout/$', views.Logout.as_view()),
     re_path(r'^welcome_page/$', login_required(views.WelcomePage.as_view())),

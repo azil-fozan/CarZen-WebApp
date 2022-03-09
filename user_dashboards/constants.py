@@ -1,4 +1,4 @@
-from carzen.utilities import RangeDict
+from BI.utilities import RangeDict
 
 PHONE_NUMBER_VALIDATION_MESSAGE = "Phone number must be entered in the format: '+987654321000'. Up to 15 digits allowed."
 GENERAL_DATETIME_FORMAT = '%b %d, %Y, %I:%M%p'

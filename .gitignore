@@ -2,6 +2,6 @@
 .idea
 __pycache__/
 __pycache__/*
-carzen/__pycache__/*
-carzen/migrations/*
+BI/__pycache__/*
+BI/migrations/*
 user_dashboards/migrations/*

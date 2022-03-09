@@ -4,8 +4,8 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
-from carzen.constants import DEFAULT_PASSWORD
-from carzen.models import User
+from BI.constants import DEFAULT_PASSWORD
+from BI.models import User
 import string
 
 
@@ -57,7 +57,44 @@ class Login(View):
         if request.user.is_authenticated:
             return HttpResponseRedirect("/welcome_page/")
         if request.path_info != '/forgot_password/':
-            self.context['login_page'] = True
+            self.context['forgot_password'] = False
+            self.context['sign_up'] = False
+        return render(request, 'login.html', self.context)
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('user', None)
+        password = request.POST.get('code', None)
+        if not User.objects.filter(username=username, is_active=True).first():
+            msg = "Your account has been deactivated or doesn't exist. Contact admin."
+            self.response_data['message'] = msg
+        else:
+            user = authenticate_user(request=request, username=username, password=password)
+            if user:
+                auth_login(request, user)
+                msg = "Logged in!"
+                self.response_data['success'] = True
+                self.response_data['url'] = request.POST.get('original_url', '')
+            else:
+                msg = "Invalid password"
+            self.response_data['message'] = msg
+        return JsonResponse(data = self.response_data)
+
+
+class SignUp(View):
+    def __init__(self):
+        super(SignUp, self).__init__()
+        self.context = {}
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+
+        return super(SignUp, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/welcome_page/")
+        self.context['sign_up'] = True
+        self.context['forgot_password'] = False
         return render(request, 'login.html', self.context)
 
     def post(self, request, *args, **kwargs):
@@ -100,7 +137,7 @@ class ForgotPassword(View):
     def get(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return HttpResponseRedirect("/welcome_page/")
-        self.context['login_page'] = False
+        self.context['forgot_password'] = True
         return render(request, 'login.html', self.context)
 
     def post(self, request, *args, **kwargs):
@@ -174,7 +211,7 @@ class WelcomePage(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'page_headding': 'Welcome To carzen',
+            'page_headding': 'Welcome To BI',
             'module_main_page': False
         }
         return render(request, 'welcome_page.html', context)
