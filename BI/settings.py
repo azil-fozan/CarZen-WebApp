@@ -31,7 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'BI.apps.BIConfig',
-    'user_dashboards.apps.PaymentDashboardsConfig'
+    'user_dashboards.apps.PaymentDashboardsConfig',
+    'user_profiles.apps.UserProfilesConfig'
 ]
 
 MIDDLEWARE = [
@@ -51,7 +52,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
             # os.path.join(BASE_DIR, 'BI/templates'),
-            os.path.join(STATIC_ROOT, 'images', 'icons'),
+            os.path.join(STATIC_ROOT, 'icons', 'icons'),
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -61,6 +62,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                'custom_template_tags': 'BI.template_tags.custom_template_tags',
+            }
         },
     },
 ]

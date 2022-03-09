@@ -1,0 +1,15 @@
+{% load custom_template_tags %}
+<div class="m-2">
+    <div class="ml-1">
+        <label class="labels mr-2">Catagory:</label>
+        <span class="text-black-50">{{ work_catagory }}</span>
+    </div>
+    <div class="ml-1">
+        <label class="labels mr-2">Car:</label>
+        <span class="text-black-50">{{ car_worked_on }}</span>
+    </div>
+    <div class="ml-1">
+        <label class="labels mr-2">Rating:</label>
+        <span class="text-black-50" style="font-size: 25px;">{% for _ in rating|times %}&#9733;{% endfor %}{% for _ in 7|add:"-5"|times %}&#9734;{% endfor %}</span>
+    </div>
+</div>

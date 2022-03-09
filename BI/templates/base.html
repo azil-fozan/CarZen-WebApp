@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{#{% load custom_template_tags %}#}
 <head>
     <!--===============================================================================================-->
         <link rel="stylesheet" type="text/css" href="{% static 'css/util.css' %}">
@@ -41,26 +42,20 @@
              data-placement="right"
              title="Home"
            id="side_bar_logo" src="">
-            {% include "logo.svg" %}
+{#            {% include "logo.svg" %}#}
         </a>
         <div>
             <a class="btn disabled">Dashboards</a></div>
         <hr>
         <div>
-            <a class="btn" href="/dashboards/receipts/">Receipts</a></div>
-        <hr>
-        <div>
-            <a class="btn" href="/dashboards/list_products/">Products</a></div>
-        <hr>
-        <div>
-            <a class="btn" href="/dashboards/list_customers/">Customers</a></div>
+            <a class="btn" href="/user_profile/receipts/">Profile</a></div>
         <hr>
         <div id="logout_div">
             <a data-toggle="tooltip"
                data-placement="right"
                title="logout"
                href="/logout/">
-                {% include "logout.svg" %}
+{#                {% include "logout.svg" %}#}
             </a>
         </div>
 

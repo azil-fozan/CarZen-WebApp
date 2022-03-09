@@ -11262,3 +11262,28 @@ label {
 .signup__link:hover {
   color: #858585;
 }
+
+/*  profiles start */
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.history_single_box {
+    border-style: dashed;
+    border-color: #f4623a;
+    border-width: 2px;
+
+}
+
+/*  profiles end  */
