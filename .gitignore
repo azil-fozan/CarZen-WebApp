@@ -5,3 +5,4 @@ __pycache__/*
 BI/__pycache__/*
 BI/migrations/*
 user_dashboards/migrations/*
+venv/*
