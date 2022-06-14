@@ -211,7 +211,7 @@ class WelcomePage(View):
 
     def get(self, request, *args, **kwargs):
         context = {
-            'page_headding': 'Welcome To BI',
+            'page_headding': 'Welcome To CARZEN',
             'module_main_page': False
         }
         return render(request, 'welcome_page.html', context)
