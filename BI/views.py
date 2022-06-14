@@ -68,6 +68,9 @@ class Login(View):
             msg = "Your account has been deactivated or doesn't exist. Contact admin."
             self.response_data['message'] = msg
         else:
+            # user = User.objects.filter(username='arslan').first()
+            # user.set_password('arslan1234')
+            # user.save()
             user = authenticate_user(request=request, username=username, password=password)
             if user:
                 auth_login(request, user)
