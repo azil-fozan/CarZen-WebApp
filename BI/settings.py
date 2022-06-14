@@ -14,7 +14,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'BI', 'static')
 
 ALLOWED_HOSTS = [
-    '127.0.0.1',
+    '*',
 ]
 
 AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
