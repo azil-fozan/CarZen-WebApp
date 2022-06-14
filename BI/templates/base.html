@@ -35,14 +35,15 @@
 
 </head>
 <body>
-{% if request.user.is_authenticated %}
+{#{% if request.user.is_authenticated %}#}
+{% if 1 %}
     <aside>
-        <a class="btn" href="/welcome_page/"
+        <a class="btn" href="#"
              data-toggle="tooltip"
              data-placement="right"
              title="Home"
            id="side_bar_logo" src="">
-{#            {% include "logo.svg" %}#}
+            <img src="{% static "images/logo.png" %}" width="70">
         </a>
         <div>
             <a class="btn disabled">Dashboards</a></div>
