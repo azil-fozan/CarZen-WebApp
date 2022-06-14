@@ -32,13 +32,13 @@
                         <span class="text-black-50">{{ user_email }}</span>
                         <span>
                             <div class="mt-5 text-center">
-                                <div class="btn btn-light" type="button">
-                                    {% if user_type != 'mechanic' %}Car Owner{% else %}Mechanic{% endif %}
+                                <div class="btn btn-light" type="button" style="pointer-events: none;">
+                                    {% if user_type != 'Mechanic' %}Car Owner{% else %}Mechanic{% endif %}
                                 </div>
                             </div>
                         </span>
-{#                        <span class="text-black-50">Deals in {{ expertise }}</span>#}
-                        <span class="text-black-50 labels">Member Since 25 May 2020</span>
+                        <span class="text-black-50">Deals in {{ expertise }}</span>
+{#                        <span class="text-black-50 labels">Member Since 25 May 2020</span>#}
                     </div>
                 </div>
                 <div class="col-md-5 border-right">
