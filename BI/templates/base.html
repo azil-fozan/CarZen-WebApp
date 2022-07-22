@@ -35,8 +35,8 @@
 
 </head>
 <body>
-{#{% if request.user.is_authenticated %}#}
-{% if 1 %}
+{% if request.user.is_authenticated %}
+{#{% if 1 %}#}
     <aside>
         <a class="btn" href="/welcome_page/"
              data-toggle="tooltip"
@@ -49,7 +49,7 @@
             <a class="btn disabled">Dashboards</a></div>
         <hr>
         <div>
-            <a class="btn" href="/user_profile/receipts/">Profile</a></div>
+            <a class="btn" href="/user_profile/profile/">Profile</a></div>
         <hr>
         <div id="logout_div">
             <a data-toggle="tooltip"
