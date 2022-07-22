@@ -29,8 +29,8 @@ urlpatterns = [
     re_path(r'^logout/$', views.Logout.as_view()),
     re_path(r'^welcome_page/$', login_required(views.WelcomePage.as_view())),
     # re_path(r'^create_user/$', views.CreateUser.as_view()),
-    path(r'dashboards/', include(('user_dashboards.urls', 'user_dashboards'), namespace='user_dashboards')),
-    path(r'user_profile/', include(('user_profiles.urls', 'user_profiles'), namespace='user_profiles')),
+    path(r'dashboards/', include('user_dashboards.urls')),
+    path(r'user_profile/', include('user_profiles.urls')),
 
     # for heroku deployment!
     # url(r'^media/(?P<path>.*)$', serve,{'document_root':       settings.MEDIA_ROOT}),
