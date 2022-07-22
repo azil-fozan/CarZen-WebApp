@@ -1,10 +1,12 @@
+import re
+
 from django.contrib.auth import authenticate as authenticate_user, login as auth_login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.views import View
 
-from BI.constants import DEFAULT_PASSWORD
+from BI.constants import DEFAULT_PASSWORD, EMAIL_RE_PATTERN, USER_ROLES
 from BI.models import User
 import string
 
@@ -23,24 +25,6 @@ class RoutUser(View):
         if request.user.is_authenticated:
             return HttpResponseRedirect("/welcome_page/")
         return HttpResponseRedirect("/login/")
-
-    def post(self, request, *args, **kwargs):
-        username = request.POST.get('user', None)
-        password = request.POST.get('code', None)
-        if not User.objects.filter(username=username, is_active=True).first():
-            msg = "Your account has been deactivated or doesn't exist. Contact admin."
-            self.response_data['message'] = msg
-        else:
-            user = authenticate_user(request=request, username=username, password=password)
-            if user:
-                auth_login(request, user)
-                msg = "Logged in!"
-                self.response_data['success'] = True
-                self.response_data['url'] = request.POST.get('original_url', '')
-            else:
-                msg = "Invalid password"
-            self.response_data['message'] = msg
-        return JsonResponse(data = self.response_data)
 
 
 class Login(View):
@@ -64,27 +48,25 @@ class Login(View):
     def post(self, request, *args, **kwargs):
         username = request.POST.get('user', None)
         password = request.POST.get('code', None)
+        is_mechanic = request.POST.get('is_mechanic', None)=='true'
+        user_role = USER_ROLES['MECHANIC' if is_mechanic else 'CAR_OWNER']
         if not User.objects.filter(username=username, is_active=True).first():
             msg = "Your account has been deactivated or doesn't exist. Contact admin."
             self.response_data['message'] = msg
         else:
-            # user = User.objects.filter(username='arslan').first()
-            # user.set_password('arslan1234')
-            # user.save()
-            # 'pbkdf2_sha256$216000$sZESOM10lfxb$PwMM3HJwqvsenfzjhyIrI9PSs/Lerg50aAj37DAUWY0='
-            user = authenticate_user(request=request, username=username, password=password)
-            if not user and [username, password]==['arslan', 'arslan1234']:
-                user = User.objects.filter(username='arslan').first()
-                user.set_password('arslan1234')
-                user.save()
-                user = authenticate_user(request=request, username=username, password=password)
-            if user:
+            user = authenticate_user(request=request, username=username, password=password, user_role=user_role)
+            # if not user and [username, password]==['arslan', 'arslan1234']:
+            #     user = User.objects.filter(username='arslan').first()
+            #     user.set_password('arslan1234')
+            #     user.save()
+            #     user = authenticate_user(request=request, username=username, password=password)
+            if user and user.user_role == user_role:
                 auth_login(request, user)
                 msg = "Logged in!"
                 self.response_data['success'] = True
                 self.response_data['url'] = request.POST.get('original_url', '')
             else:
-                msg = "Invalid password"
+                msg = "Invalid password or role!"
             self.response_data['message'] = msg
         return JsonResponse(data = self.response_data)
 
@@ -109,19 +91,24 @@ class SignUp(View):
     def post(self, request, *args, **kwargs):
         username = request.POST.get('user', None)
         password = request.POST.get('code', None)
-        if not User.objects.filter(username=username, is_active=True).first():
-            msg = "Your account has been deactivated or doesn't exist. Contact admin."
-            self.response_data['message'] = msg
+        email = request.POST.get('email', None)
+        first_name = request.POST.get('first_name', None)
+        last_name = request.POST.get('last_name', None)
+        is_mechanic = request.POST.get('is_mechanic', None) == 'true'
+        user_role = USER_ROLES['MECHANIC' if is_mechanic else 'CAR_OWNER']
+
+        if User.objects.filter(username=username).first():
+            msg = 'User aleady Exists, please login!'
+        elif username and password and re.fullmatch(EMAIL_RE_PATTERN, email):
+            new_user_object = User.objects.create(email=email, username=username, first_name=first_name,
+                                                  last_name=last_name, user_role=user_role)
+            new_user_object.set_password(password)
+            new_user_object.save()
+            self.response_data['success'] = True
+            msg = "Logged in!"
         else:
-            user = authenticate_user(request=request, username=username, password=password)
-            if user:
-                auth_login(request, user)
-                msg = "Logged in!"
-                self.response_data['success'] = True
-                self.response_data['url'] = request.POST.get('original_url', '')
-            else:
-                msg = "Invalid password"
-            self.response_data['message'] = msg
+            msg = 'Error! Please provide username, correct email and password!'
+        self.response_data['message'] = msg
         return JsonResponse(data = self.response_data)
 
 

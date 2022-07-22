@@ -1,6 +1,7 @@
 function login(form_obj) {
     var uname = form_obj.find('input[name="username"]').val(),
         password = form_obj.find('input[name="pass"]').val(),
+        is_mechanic = form_obj.find('.type_selector').first().hasClass('active') === true,
         original_url = get_url_params().next;
     $.ajax({
         url: "/login/",
@@ -9,6 +10,7 @@ function login(form_obj) {
         data: {
             user: uname,
             code: password,
+            is_mechanic: is_mechanic,
             original_url: original_url?original_url:'',
             csrfmiddlewaretoken: window.csrfToken
         },
@@ -40,19 +42,24 @@ function login(form_obj) {
 
 
 function signup(form_obj) {
-    console.log('Signing up!!!');
-    return;
     var uname = form_obj.find('input[name="username"]').val(),
         password = form_obj.find('input[name="pass"]').val(),
-        original_url = get_url_params().next;
+        email = form_obj.find('input[name="email"]').val(),
+        first_name = form_obj.find('input[name="first_name"]').val(),
+        last_name = form_obj.find('input[name="last_name"]').val(),
+        is_mechanic = form_obj.find('.type_selector').first().hasClass('active') === true;
+
     $.ajax({
-        url: "/login/",
+        url: "/signup/",
         method: 'POST',
         dataType: 'json',
         data: {
             user: uname,
             code: password,
-            original_url: original_url?original_url:'',
+            email: email,
+            first_name: first_name,
+            last_name: last_name,
+            is_mechanic: is_mechanic,
             csrfmiddlewaretoken: window.csrfToken
         },
         beforeSend: function () {
@@ -65,7 +72,7 @@ function signup(form_obj) {
                             location.href = resp.original_url;
                     }
                     else{
-                        location.reload();
+                        location.href='/login/';
                     }
                 } else {
                     show_snackbar_message(resp.message, 'warning',  'center');
