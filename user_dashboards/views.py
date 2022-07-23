@@ -10,12 +10,76 @@ from openpyxl import load_workbook
 from openpyxl.styles.borders import Border, Side
 from num2words import num2words
 
+from BI.constants import USER_ROLES
 from BI.utilities import execute_read_query
 from user_dashboards.models import *
 from datetime import datetime
 from user_dashboards.constants import *
 from user_dashboards.queries import RECEIPTS_MAIN_TABLE, RECEIPTS_TOTAL_AMOUNTS
 from user_dashboards.utils import get_receipt_product_data, download_file
+from user_profiles.models import MechanicDetail
+
+
+class ListMechanic(View):
+    def __init__(self):
+        super(ListMechanic, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(ListMechanic, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+
+        all_mechanics = User.objects.filter(user_role=USER_ROLES['MECHANIC'])\
+            .values('id', 'first_name', 'last_name', 'full_name', 'rating')
+        mech_ids = [_['id'] for _ in all_mechanics]
+        mech_det = MechanicDetail.objects.filter(user_id__in=mech_ids)
+        mech_det_dict = {_.user_id: _.expertise for _ in mech_det}
+        over_all_rating = 3
+        for _ in all_mechanics:
+            if _['id'] in mech_det_dict:
+                _.update({'expertise': mech_det_dict[_['id']]})
+            name = _['full_name'] if _['full_name'] else f"{_['first_name']} {_['last_name']}"
+            _.update({'name': name, 'over_all_rating': _['rating'], 'rem_over_all_rating': 5-_['rating']})
+        context = {
+            'page_headding': 'Find Mechanic',
+            'mechanics': list(all_mechanics),
+            # 'table_headding_single': 'Receipt',
+            # 'table_headding_plural': 'Receipts',
+            # 'has_receipts': False,
+            # 'column_names': ['ID', 'Customer Name', 'Active Date', 'Total Amount', 'Paid Amount', 'Due Date', 'Status'],
+            # 'customers': Customer.objects.filter(created_by=request.user).values('id', 'name', 'reference')
+        }
+        return render(request, 'main_listing.html', context)
+    def post(self, request, *args, **kwargs):
+        data = Receipt.objects.filter(created_by=request.user).order_by('expiry_date')
+        search_str = request.POST.get('search_query', '')
+        if search_str:
+            if search_str.isdigit():
+                data = data.filter(Q(customer__name__icontains=search_str)|Q(id=search_str))
+            else:
+                data = data.filter(customer__name__icontains=search_str)
+        response_data = []
+        total_amounts_data = execute_read_query(RECEIPTS_TOTAL_AMOUNTS.format(','.join([str(_.id) for _ in data])))
+        total_amounts_dict = {_[0]:round(int(_[1]), 2) for _ in total_amounts_data}
+
+        for row in data:
+            temp_dict = {}
+            temp_dict['id'] = row.id
+            temp_dict['customer__name'] = row.customer.name
+            temp_dict['active_date'] = row.active_date.strftime(GENERAL_DATE)
+            temp_dict['paid_amount'] = row.paid_amount
+            temp_dict['days_left'] = (row.expiry_date - timezone.now()).days
+            temp_dict['expiry_date'] = row.expiry_date.strftime(GENERAL_DATE)
+            temp_dict['alarm_color'] = ALARM_COLOR[temp_dict['days_left']]
+            temp_dict['status'] = row.status
+            temp_dict['total_amount'] = total_amounts_dict.get(row.id, 'No products added')
+            response_data.append(temp_dict)
+        response = {
+            'data': response_data,
+            'success': True
+        }
+        return JsonResponse(data=response)
 
 
 class Receipts(View):
