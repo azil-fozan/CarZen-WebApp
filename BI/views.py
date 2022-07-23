@@ -3,7 +3,7 @@ import re
 from django.contrib.auth import authenticate as authenticate_user, login as auth_login, logout
 from django.contrib.auth.password_validation import validate_password
 from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 
 from BI.constants import DEFAULT_PASSWORD, EMAIL_RE_PATTERN, USER_ROLES
@@ -25,6 +25,47 @@ class RoutUser(View):
         if request.user.is_authenticated:
             return HttpResponseRedirect("/welcome_page/")
         return HttpResponseRedirect("/login/")
+
+
+class main_page(View):
+    def __init__(self):
+        super(main_page, self).__init__()
+        self.context = {}
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+
+        return super(main_page, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/welcome_page/")
+        return HttpResponseRedirect("/login/")
+
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('user', None)
+        password = request.POST.get('code', None)
+        is_mechanic = request.POST.get('is_mechanic', None)=='true'
+        user_role = USER_ROLES['MECHANIC' if is_mechanic else 'CAR_OWNER']
+        if not User.objects.filter(username=username, is_active=True).first():
+            msg = "Your account has been deactivated or doesn't exist. Contact admin."
+            self.response_data['message'] = msg
+        else:
+            user = authenticate_user(request=request, username=username, password=password, user_role=user_role)
+            # if not user and [username, password]==['arslan', 'arslan1234']:
+            #     user = User.objects.filter(username='arslan').first()
+            #     user.set_password('arslan1234')
+            #     user.save()
+            #     user = authenticate_user(request=request, username=username, password=password)
+            if user and user.user_role == user_role:
+                auth_login(request, user)
+                msg = "Logged in!"
+                self.response_data['success'] = True
+                self.response_data['url'] = request.POST.get('original_url', '')
+            else:
+                msg = "Invalid password or role!"
+            self.response_data['message'] = msg
+        return JsonResponse(data = self.response_data)
 
 
 class Login(View):

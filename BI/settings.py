@@ -10,6 +10,8 @@ SECRET_KEY = '$60^1ruaokuo*ddn(ntp$*69e30x)44c+v#-ug^yh49#)5#-rz'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# SESSION_COOKIE_SECURE = True
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'BI', 'static')
 

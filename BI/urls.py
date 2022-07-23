@@ -22,7 +22,7 @@ from BI import views, settings
 from BI.decorators import login_required
 
 urlpatterns = [
-    re_path(r'^$', views.Login.as_view()),
+    re_path(r'^$', views.main_page.as_view()),
     re_path(r'^login/$', views.Login.as_view()),
     re_path(r'^signup/$', views.SignUp.as_view()),
     re_path(r'^forgot_password/$', views.ForgotPassword.as_view()),
