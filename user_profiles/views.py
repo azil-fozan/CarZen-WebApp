@@ -60,7 +60,7 @@ class UserProfile(View):
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id', request.user.id)
         context = {
-            'page_headding': 'My Profile' if request.user.id == user_id else 'User Profile',
+            'page_headding': 'My Profile' if request.user.id == user_id else f'{request.user.get_user_full_name()}\'s Profile',
         }
         context.update(self.get_user_details(request, user_id=user_id))
         if not context.get('user_type', None):
