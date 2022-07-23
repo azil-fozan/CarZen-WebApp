@@ -5,3 +5,8 @@ USER_ROLES = {
     'CAR_OWNER': 2,
     'ADMIN': 3
 }
+USER_ROLES_r = {
+    1: 'MECHANIC',
+    2: 'CAR_OWNER',
+    3: 'ADMIN'
+}

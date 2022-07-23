@@ -39,9 +39,16 @@ class User(AbstractBaseUser):
     is_active = models.BooleanField(db_column='is_active', default=True)
     is_superuser = models.BooleanField(db_column='is_superuser', default=False)
     user_role = models.IntegerField(db_column='user_role', blank=True, default=False)
+    rating = models.IntegerField(db_column='rating', blank=True, default=0)
     date_created = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(blank=True)
     admin = models.ForeignKey('User', null=True, db_column='admin', on_delete=CASCADE)
+    phone_number = models.CharField(max_length=40, null=True, blank=True)
+    address = models.CharField(max_length=40, null=True, blank=True)
+    occupation = models.CharField(max_length=40, null=True, blank=True)
+    country = models.CharField(max_length=40, null=True, blank=True)
+    state = models.CharField(max_length=40, null=True, blank=True)
+    image = models.CharField(max_length=200, null=True, blank=True)
     USERNAME_FIELD = 'username'
 
     objects = CustomUserManager()

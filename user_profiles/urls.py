@@ -3,5 +3,6 @@ from . import views
 from django.conf.urls import url
 
 urlpatterns = [
+    url(r'^profile/(?P<user_id>\d+)/$', login_required(views.UserProfile.as_view())),
     url(r'^profile/$', login_required(views.UserProfile.as_view())),
 ]

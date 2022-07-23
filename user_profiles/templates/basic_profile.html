@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load custom_template_tags %}
 {% load static %}
 {% block page_title %}
     <title>CARZEN - {{ page_headding }}</title>
@@ -19,6 +20,7 @@
         <!-- Third party plugin CSS-->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
+        <script src="{% static 'js/profile.js' %}"></script>
 {% endblock %}
 
 {% block page_contents %}
@@ -33,12 +35,16 @@
                         <span>
                             <div class="mt-5 text-center">
                                 <div class="btn btn-light" type="button" style="pointer-events: none;">
-                                    {% if user_type != 'Mechanic' %}Car Owner{% else %}Mechanic{% endif %}
+                                    {% if user_type != 'MECHANIC' %}Car Owner{% else %}Mechanic{% endif %}
                                 </div>
                             </div>
                         </span>
                         <span class="text-black-50">Deals in {{ expertise }}</span>
-{#                        <span class="text-black-50 labels">Member Since 25 May 2020</span>#}
+                        <div class="ml-1">
+{#                            <label class="labels mr-2">Rating:</label>#}
+                            <span class="text-black-50" style="font-size: 25px;">{% for _ in over_all_rating|times %}&#9733;{% endfor %}{% for _ in rem_over_all_rating|times %}&#9734;{% endfor %}</span>
+                        </div>
+                        <span class="text-black-50 labels">Member Since 25 May 2020</span>
                     </div>
                 </div>
                 <div class="col-md-5 border-right">
@@ -47,21 +53,25 @@
                             <h4 class="text-right">Profile Settings</h4>
                         </div>
                         <div class="row mt-2">
-                            <div class="col-md-6"><label class="labels">First Name</label><input type="text" class="form-control" placeholder="first name" value="{{ first_name }}"></div>
-                            <div class="col-md-6"><label class="labels">Last Surname</label><input type="text" class="form-control" value="{{ last_name }}" placeholder="surname"></div>
+                            <div class="col-md-6"><label class="labels">First Name</label><input disabled type="text" class="form-control" placeholder="first name" value="{{ first_name }}"></div>
+                            <div class="col-md-6"><label class="labels">Last Surname</label><input disabled type="text" class="form-control" value="{{ last_name }}" placeholder="surname"></div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12"><label class="labels">Mobile Number</label><input type="text" class="form-control" placeholder="enter phone number" value="{{ mobile_num }}"></div>
-                            <div class="col-md-12"><label class="labels">Complete Address</label><input type="text" class="form-control" placeholder="enter complete address" value="{{ address }}"></div>
-                            <div class="col-md-12"><label class="labels">Postcode</label><input type="text" class="form-control" placeholder="enter postal code" value="{{ postal_code }}"></div>
-                            <div class="col-md-12"><label class="labels">Email ID</label><input type="text" class="form-control" placeholder="enter email id" value="{{ user_email }}"></div>
-                            <div class="col-md-12"><label class="labels">Occupation</label><input type="text" class="form-control" placeholder="education" value="{{ occupation }}"></div>
+                        <div class="row mt-1">
+                            <div class="col-md-12"><label class="labels">Mobile Number</label><input disabled type="text" class="form-control" placeholder="enter phone number" value="{{ mobile_num }}"></div>
+                            <div class="col-md-12"><label class="labels">Complete Address</label><input disabled type="text" class="form-control" placeholder="enter complete address" value="{{ address }}"></div>
+                            {% if postal_code %}
+                                <div class="col-md-12"><label class="labels">Postcode</label><input disabled type="text" class="form-control" placeholder="enter postal code" value="{{ postal_code }}"></div>
+                            {% endif %}
+                            <div class="col-md-12"><label class="labels">Email ID</label><input disabled type="text" class="form-control" placeholder="enter email id" value="{{ user_email }}"></div>
+                            <div class="col-md-12"><label class="labels">Occupation</label><input disabled type="text" class="form-control" placeholder="education" value="{{ occupation }}"></div>
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-md-6"><label class="labels">Country</label><input type="text" class="form-control" placeholder="country" value="{{ country }}"></div>
-                            <div class="col-md-6"><label class="labels">State/Region</label><input type="text" class="form-control" value="" placeholder="{{ state }}"></div>
+                        <div class="row mt-1">
+                            <div class="col-md-6"><label class="labels">Country</label><input disabled type="text" class="form-control" placeholder="country" value="{{ country }}"></div>
+                            <div class="col-md-6"><label class="labels">State/Region</label><input disabled type="text" class="form-control" value="" placeholder="{{ state }}"></div>
                         </div>
-                        <div class="mt-5 text-center"><button class="btn btn-primary" type="button">Edit Profile</button></div>
+                        {% if own_profile %}
+                            <div class="mt-5 text-center"><button class="btn btn-primary" id="edit_my_profile" type="button">Edit Profile</button></div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="col-md-4">
