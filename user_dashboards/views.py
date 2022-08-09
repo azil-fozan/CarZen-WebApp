@@ -31,7 +31,7 @@ class ListMechanic(View):
     def get(self, request, *args, **kwargs):
 
         all_mechanics = User.objects.filter(user_role=USER_ROLES['MECHANIC'])\
-            .values('id', 'first_name', 'last_name', 'full_name', 'rating')
+            .values('id', 'first_name', 'last_name', 'full_name', 'rating', 'image')
         mech_ids = [_['id'] for _ in all_mechanics]
         mech_det = MechanicDetail.objects.filter(user_id__in=mech_ids)
         mech_det_dict = {_.user_id: _.expertise for _ in mech_det}
