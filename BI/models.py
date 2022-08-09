@@ -38,6 +38,7 @@ class User(AbstractBaseUser):
     email = models.EmailField(db_column='email', blank=True)
     is_active = models.BooleanField(db_column='is_active', default=True)
     is_superuser = models.BooleanField(db_column='is_superuser', default=False)
+    is_staff = models.BooleanField(default=False)
     user_role = models.IntegerField(db_column='user_role', blank=True, default=False)
     rating = models.IntegerField(db_column='rating', blank=True, default=0)
     date_created = models.DateTimeField(default=timezone.now)
@@ -58,6 +59,12 @@ class User(AbstractBaseUser):
 
     def get_user_full_name(self):
         return f'{self.first_name} {self.last_name}' if self.first_name or self.last_name else self.full_name
+
+    def has_perm(self, perm, obj=None):
+        return self.is_superuser
+
+    def has_module_perms(self, app_label):
+        return self.is_superuser
 
     class Meta:
         db_table = 'user'
