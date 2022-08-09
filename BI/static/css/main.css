@@ -11240,7 +11240,7 @@ label {
   color: #ccc;
 }
 .form-control {
-  background-color: transparent;
+  background-color: rgb(250 235 215 / 38%);
   border-top: 0;
   border-right: 0;
   border-left: 0;

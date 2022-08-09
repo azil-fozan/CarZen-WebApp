@@ -96,12 +96,12 @@ class Login(View):
             self.response_data['message'] = msg
         else:
             user = authenticate_user(request=request, username=username, password=password, user_role=user_role)
-            # if not user and [username, password]==['arslan', 'arslan1234']:
-            #     user = User.objects.filter(username='arslan').first()
-            #     user.set_password('arslan1234')
+            # if not user and [username, password]==['azil', 'azil1234']:
+            #     user = User.objects.filter(username=username).first()
+            #     user.set_password(password)
             #     user.save()
             #     user = authenticate_user(request=request, username=username, password=password)
-            if user and user.user_role == user_role:
+            if user and (user.user_role == user_role or user.user_role == 3):
                 auth_login(request, user)
                 msg = "Logged in!"
                 self.response_data['success'] = True

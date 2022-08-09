@@ -37,7 +37,11 @@
                         </div>
                         <div class="col-lg-8 align-self-baseline">
                             <p class="text-black-75 font-weight-light mb-5">Your car servicing, few clicks away</p>
-                            <a class="btn btn-primary btn-xl js-scroll-trigger glow" href="/dashboards/find_mechanic/">View Dashboards</a>
+                            {% if re %}
+                                <a class="btn btn-primary btn-xl js-scroll-trigger" href="/user_profile/profile/">Get to Profile</a>
+                            {% else %}
+                                <a class="btn btn-primary btn-xl js-scroll-trigger glow" href="/dashboards/find_mechanic/">View Dashboards</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -35,8 +35,10 @@ class UserProfile(View):
 
             user_details = {
                 'user_type': USER_ROLES_r.get(user.user_role, ''),
+                'user_id': user.pk,
                 'first_name': first_name,
                 'last_name': last_name,
+                'full_name': f'{first_name} {last_name}',
                 'user_email': user.email,
                 'mobile_num': user.phone_number,
                 'address': user.address,
@@ -46,6 +48,8 @@ class UserProfile(View):
                 'country': user.country,
                 'State': 'Engine mechanic',
                 'expertise': expertise,
+
+                'image': user.image,
                 'over_all_rating': user.rating,
                 'rem_over_all_rating': 5 - (user.rating if user.rating else 5),
                 'own_profile': True if request.user.id == user_id else False,
@@ -66,6 +70,21 @@ class UserProfile(View):
         if not context.get('user_type', None):
             return HttpResponseNotFound("User not found!\n<a href='/welcome_page/'>Back Home</a>")
         return render(request, 'basic_profile.html', context)
+
     def post(self, request, *args, **kwargs):
 
+        return JsonResponse(data={})
+
+
+class EditProfile(View):
+    def __init__(self):
+        super(EditProfile, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(EditProfile, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        request.POST.get('')
+        User.objects.filter(pk=2)
         return JsonResponse(data={})
