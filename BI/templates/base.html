@@ -46,7 +46,7 @@
             <img src="{% static "images/logo.png" %}" width="70">
         </a>
         <div>
-            <a class="btn" href="/dashboards/find_mechanic/">Dashboards</a></div>
+            <a class="btn {% if request.user.user_role == 1 %}disabled{% endif %}" href="/dashboards/find_mechanic/">Dashboards</a></div>
         <hr>
         <div>
             <a class="btn" href="/user_profile/profile/">Profile</a></div>
