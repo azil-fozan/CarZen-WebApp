@@ -3,7 +3,7 @@ import traceback
 import io
 
 from django.db.models import Q
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.views import View
 from openpyxl import load_workbook
@@ -17,7 +17,7 @@ from datetime import datetime
 from user_dashboards.constants import *
 from user_dashboards.queries import RECEIPTS_MAIN_TABLE, RECEIPTS_TOTAL_AMOUNTS
 from user_dashboards.utils import get_receipt_product_data, download_file
-from user_profiles.models import MechanicDetail
+from user_profiles.models import MechanicDetail, ServiceHistory
 
 
 class ListMechanic(View):
@@ -76,6 +76,47 @@ class ListMechanic(View):
             'success': True
         }
         return JsonResponse(data=response)
+
+
+
+class HireMechanic(View):
+    def __init__(self):
+        super(HireMechanic, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(HireMechanic, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        mech_id = kwargs.get('mech_id', None)
+        if not mech_id or not User.objects.filter(pk=mech_id, user_role=1).count():
+            return HttpResponseNotFound("Mechanic not found!\n<a href='/welcome_page/'>Back Home</a>")
+
+        mech_obj = User.objects.filter(pk=mech_id, user_role=1).first()
+        mech_details = MechanicDetail.objects.filter(user_id=mech_id).first()
+
+        context = {
+            'page_headding': 'Hire Mechanic',
+            'mechanic_expertise': mech_details.expertise if mech_details else None,
+            'mechanic': mech_obj,
+        }
+        return render(request, 'hire_mech_form.html', context)
+
+    def post(self, request, *args, **kwargs):
+        mech_id = kwargs.get('mech_id', None)
+        if not mech_id:
+            return JsonResponse(self.response_data)
+
+        catagory = request.POST.get('catagory')
+        car_info = request.POST.get('car_info')
+        service_info = request.POST.get('service_info')
+
+        hist_obj = ServiceHistory(mech_id=mech_id, owner_id=request.user.pk, catagory=catagory, car=car_info, service_info=service_info)
+        hist_obj.save()
+        self.response_data['success'] = True
+        self.response_data['message'] = 'Service Ticket successfully opened!'
+
+        return JsonResponse(self.response_data)
 
 
 class Receipts(View):

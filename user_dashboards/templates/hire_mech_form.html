@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% load custom_template_tags %}
+{% load static %}
+{% block page_title %}
+    <title>CARZEN - {{ page_headding }}</title>
+{% endblock %}
+
+{% block top_bar %}
+    {% include "top_bar.html" with page_headding=page_headding module_main_page=module_main_page %}
+{% endblock %}
+
+{% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Third party plugin CSS-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <script src="{% static 'js/hire_mech.js' %}"></script>
+{% endblock %}
+
+{% block page_contents %}
+    <section class="scrollable" style="background-color: #eee;overflow-x: hidden;">
+      <div class="/*container py-5 h-100*/">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12">
+                <html>
+
+                    <style>
+                      body, div, form, input, select {
+                          padding: 0;
+                          margin: 0;
+                          outline: none;
+                          font-family: Roboto, Arial, sans-serif;
+                          font-size: 14px;
+                          color: #666;
+                          line-height: 22px;
+                      }
+                      form {
+                          width: 100%;
+                          padding: 20px;
+                          background: #fff;
+                          box-shadow: 0 2px 5px #ccc;
+                      }
+                      input {
+                      width: calc(100% - 10px);
+                      padding: 5px;
+                      border: 1px solid #ccc;
+                      border-radius: 3px;
+                      vertical-align: middle;
+                      }
+                      input:hover, textarea:hover, select:hover {
+                      outline: none;
+                      border: 1px solid #095484;
+                      background: #e6eef7;
+                      }
+                      select {
+                      padding: 7px 0;
+                      border-radius: 3px;
+                      border: 1px solid #ccc;
+                      background: transparent;
+                      }
+                      select, table {
+                      width: 100%;
+                      }
+                      .day-visited i, .time-visited i {
+                      right: 5px;
+                      z-index: 1;
+                      color: #a9a9a9;
+                      }
+                      th, td {
+                      width: 18%;
+                      padding: 15px 0;
+                      border-bottom: 1px solid #ccc;
+                      text-align: center;
+                      vertical-align: unset;
+                      line-height: 18px;
+                      font-weight: 400;
+                      word-break: break-all;
+                      }
+                      textarea {
+                      width: calc(100% - 6px);
+                      }
+                      th, td {
+                      word-break: keep-all;
+                      }
+                    </style>
+
+                    <div class="testbox">
+                          <form id="hire_mech_form" action="/">
+    {#                        <h1>Bank Customer Feedback Form</h1>#}
+                            <h6>Service Catagory<span>*</span></h6>
+                                <input disabled class="form-control my-2" type="text" name="catagory" value="{{ mechanic_expertise }}"/>
+                              <h6>Car/Vehicle Name<span>*</span></h6>
+                                <input class="form-control my-2" type="text" name="car_info" />
+                              <h6>Service Detail (optional)</h6>
+                                  <textarea class="form-control my-2" rows="5" name="service_info"></textarea>
+                            <div class="d-flex justify-content-center">
+                              <button class="btn btn-success px-5 mt-2" type="submit" href="/">Hire</button>
+                            </div>
+                          </form>
+                    </div>
+
+                </html>
+
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
