@@ -5,6 +5,7 @@ import io
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views import View
 from openpyxl import load_workbook
 from openpyxl.styles.borders import Border, Side
@@ -30,27 +31,46 @@ class ListMechanic(View):
 
     def get(self, request, *args, **kwargs):
 
-        all_mechanics = User.objects.filter(user_role=USER_ROLES['MECHANIC'])\
-            .values('id', 'first_name', 'last_name', 'full_name', 'rating', 'image')
-        mech_ids = [_['id'] for _ in all_mechanics]
-        mech_det = MechanicDetail.objects.filter(user_id__in=mech_ids)
-        mech_det_dict = {_.user_id: _.expertise for _ in mech_det}
-        over_all_rating = 3
-        for _ in all_mechanics:
-            if _['id'] in mech_det_dict:
-                _.update({'expertise': mech_det_dict[_['id']]})
-            name = _['full_name'] if _['full_name'] else f"{_['first_name']} {_['last_name']}"
-            _.update({'name': name, 'over_all_rating': _['rating'], 'rem_over_all_rating': TOTAL_RATING-_['rating']})
         context = {
             'page_headding': 'Find Mechanic',
-            'mechanics': list(all_mechanics),
+            'mechanics': [],
         }
         return render(request, 'main_listing.html', context)
 
     def post(self, request, *args, **kwargs):
-        a=2
-        return JsonResponse(data=self.response_data)
+        search_str = request.POST.get('search_str')
 
+        all_mechanics = User.objects.filter(user_role=USER_ROLES['MECHANIC'])
+        # apply search filter:
+        if search_str:
+            all_mechanics = all_mechanics.filter(Q(full_name__icontains=search_str)|
+                                                 Q(address__icontains=search_str)|
+                                                 Q(mechanicdetail__expertise__icontains=search_str))
+
+        all_mechanics = all_mechanics.values('id', 'first_name', 'last_name', 'full_name', 'address', 'rating', 'image', 'mechanicdetail__expertise')
+        # mech_ids = [_['id'] for _ in all_mechanics]
+
+        # apply search
+        # if search_str:
+        #     mech_det = MechanicDetail.objects.filter(Q(expertise__icontains=search_str)|
+        #                                              Q(user_id__in=mech_ids))
+        # else:
+        # mech_det = MechanicDetail.objects.filter(user_id__in=mech_ids)
+
+        # mech_det_dict = {_.user_id: _.expertise for _ in mech_det}
+
+        # final_mechanics = []
+        for _ in all_mechanics:
+            # if _['id'] in mech_det_dict:
+            #     _.update({'expertise': mech_det_dict[_['id']]})
+            #     final_mechanics.append(_)
+
+            name = _['full_name'] if _['full_name'] else f"{_['first_name']} {_['last_name']}"
+            _.update({'name': name, 'over_all_rating': _['rating'], 'rem_over_all_rating': TOTAL_RATING - _['rating']})
+
+        self.response_data['table_rows_html'] = render_to_string('mechanics_table_rows.html', context={'mechanics': list(all_mechanics)})
+        self.response_data['success'] = True
+        return JsonResponse(data=self.response_data)
 
 
 class HireMechanic(View):

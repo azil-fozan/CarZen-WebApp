@@ -1,5 +1,4 @@
-function load_mechanics(page=1){
-    debugger;
+function load_mechanics(){
     var search_str = $('#mechanic_search_string').val();
 
     $.ajax({
@@ -32,7 +31,7 @@ function load_mechanics(page=1){
 
 
 $(document).ready(function () {
-    // load_services(1);
+    load_mechanics();
     $(document).on('submit', '#search_mechanic', function (e) {
         e.preventDefault();
         load_mechanics();

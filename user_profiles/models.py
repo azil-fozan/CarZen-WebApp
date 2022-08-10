@@ -1,3 +1,5 @@
+from django.db.models import CASCADE
+
 from django.db import models
 import datetime
 
@@ -19,7 +21,7 @@ class Bill(models.Model):
 class MechanicDetail(models.Model):
     expertise = models.CharField(max_length=30)
     updated_on = models.DateTimeField(blank=True, null=True, default=get_utc_time)
-    user_id = models.IntegerField()
+    user = models.ForeignKey('BI.User', on_delete=CASCADE, null=True, db_column='user_id')
 
     class Meta:
         managed = False
