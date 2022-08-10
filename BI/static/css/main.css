@@ -11307,12 +11307,12 @@ label {
 
 }
 
-.review_comment_box {
-    border-style: dotted;
-    border-color: #f4623a;
-    border-width: 1px;
-    border-radius: 10px;
-}
+/*.review_comment_box {*/
+/*    border-style: dotted;*/
+/*    border-color: #f4623a;*/
+/*    border-width: 1px;*/
+/*    border-radius: 10px;*/
+/*}*/
 
 .scrollable_reviews {
     max-height: 400px;

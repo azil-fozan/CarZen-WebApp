@@ -6,4 +6,6 @@ urlpatterns = [
     url(r'^profile/(?P<user_id>\d+)/$', login_required(views.UserProfile.as_view())),
     url(r'^profile/$', login_required(views.UserProfile.as_view())),
     url(r'^edit_profile/$', login_required(views.EditProfile.as_view())),
+    url(r'^profile_history/(?P<user_id>\d+)/$', login_required(views.ProfileHistory.as_view())),
+    url(r'^profile_history/$', login_required(views.ProfileHistory.as_view())),
 ]

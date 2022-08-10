@@ -7,6 +7,7 @@ import io
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
+from django.template.loader import render_to_string
 from django.views import View
 from django.core.files.storage import FileSystemStorage
 import uuid
@@ -15,6 +16,7 @@ from BI import settings
 from BI.constants import USER_ROLES_r, ALLOWED_IMAGE_TYPES, IMAGE_MIME_TYPES, TOTAL_RATING
 from BI.models import User
 from BI.utilities import execute_read_query
+from user_dashboards.constants import GENERAL_DATETIME_FORMAT, GENERAL_DATE
 from user_profiles.models import MechanicDetail, ServiceHistory
 
 
@@ -171,3 +173,65 @@ class EditProfile(View):
         else:
             self.response_data['message'] = 'User does not exist!'
         return JsonResponse(data=self.response_data)
+
+
+class ProfileHistory(View):
+    def __init__(self):
+        super(ProfileHistory, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(ProfileHistory, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id', request.user.id)
+        if not user_id:
+            self.response_data['message'] = 'User Does not exist!'
+            return JsonResponse(data=self.response_data)
+
+        # service_history = ServiceHistory.objects.filter(mech_id=user_id).values('catagory', 'car', 'rating', 'comments', 'created_on')
+        # for _ in service_history:
+        #     _.update({'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT), 'rem_rating': TOTAL_RATING - _['rating']})
+
+        # hostory_length = service_history.count()
+
+        context = {
+            'page_headding': 'Service History',
+            # 'services': list(service_history),
+            'services': [],
+        }
+        return render(request, 'service_listing.html', context)
+
+    def post(self, request, *args, **kwargs):
+        user_id = kwargs.get('user_id')
+        my_profile = True
+        if user_id:
+            my_profile = False
+        user_id = request.user.id
+
+        search_str = request.POST.get('search_str')
+        if not user_id:
+            self.response_data['message'] = 'User Does not exist!'
+            return JsonResponse(data=self.response_data)
+        if my_profile:
+            service_history = ServiceHistory.objects.filter(Q(owner_id=user_id)|Q(mech_id=user_id))
+        else:
+            service_history = ServiceHistory.objects.filter(mech_id=user_id, status='Closed')
+        if search_str:
+            service_history = service_history.filter(Q(catagory__icontains=search_str) | Q(car__icontains=search_str))
+
+        service_history = service_history.order_by('-status', '-created_on')
+
+        service_history = service_history.values('catagory', 'car', 'rating', 'status', 'comments', 'created_on')
+        for _ in service_history:
+            _.update({'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
+                      'rem_rating': TOTAL_RATING - _['rating']})
+
+        # hostory_length = service_history.count()
+
+        self.response_data.update({
+            'table_rows_html': render_to_string('service_table_rows.html', context={'services': list(service_history)}),
+            'success': True
+        })
+        return JsonResponse(data=self.response_data)
+

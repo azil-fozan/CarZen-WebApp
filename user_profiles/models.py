@@ -34,6 +34,7 @@ class ServiceHistory(models.Model):
     rating = models.IntegerField(default=5)
     comments = models.TextField(default=None)
     car = models.CharField(max_length=30, default=None, db_column='car_info')
+    status = models.CharField(max_length=30, default=None)
     vehicle = models.IntegerField(default=0)
     expected_bill = models.IntegerField(default=0)
     total_bill = models.IntegerField(default=0)

@@ -1,0 +1,25 @@
+{% load custom_template_tags %}
+{% for serv in services %}
+  <tr>
+      <th class="align-middle">
+        <span class="ms-2">{{ serv.catagory }}</span>
+      </th>
+      <td class="align-middle">
+        <span>{{ serv.car }}</span>
+      </td>
+      <td class="align-middle">
+        <h6 class="mb-0">
+            <span class="text-black-50" style="font-size: 25px;">{% for _ in serv.rating|times %}&#9733;{% endfor %}{% for _ in serv.rem_rating|times %}&#9734;{% endfor %}</span>
+        </h6>
+      </td>
+      <td class="align-middle" style="color: {% ifequal serv.status "Closed" %}Green{% else %}Red{% endifequal  %};">
+          <div class="listing_comment_box">{{ serv.status }}</div>
+      </td>
+      <td class="align-middle w-40">
+          <div class="listing_comment_box">{{ serv.comments }}</div>
+      </td>
+      <td class="align-middle">
+          <span>{{ serv.created_on }}</span>
+      </td>
+  </tr>
+{% endfor %}

@@ -1,10 +1,73 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load custom_template_tags %}
+{% load static %}
+{% block page_title %}
+    <title>CARZEN - {{ page_headding }}</title>
+{% endblock %}
+
+{% block top_bar %}
+    {% include "top_bar.html" with page_headding=page_headding module_main_page=module_main_page %}
+{% endblock %}
+
+{% block head %}
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <!-- Google fonts-->
+        <link href="https://fonts.googleapis.com/css?family=Merriweather+Sans:400,700" rel="stylesheet" />
+        <link href="https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic" rel="stylesheet" type="text/css" />
+        <!-- Third party plugin CSS-->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <script src="{% static 'js/service_history.js' %}"></script>
+{% endblock %}
+
+{% block page_contents %}
+    <input type="hidden" id="user_id" value="{{ request.user.pk }}">
+    <section class="scrollable" style="background-color: #eee;overflow-x: hidden;">
+      <div class="/*container py-5 h-100*/">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12">
+
+            <div class="card">
+              <div class="card-header p-3 d-flex justify-content-end">
+{#                <h5 class="mb-0"><i class="mr-2 fas fa-tasks me-2"></i>Task List</h5>#}
+                  <form class="form-inline search-bar-wrap" id="search_sevice_history">
+                        <input class="form-control form-style header-search" required id="sevice_history_search_string" type="text"  placeholder="Search serivce by caragory or car" aria-label="Search">
+                        <button class="search_sevice_history mx-2" type="submit">
+                            {% include 'search_icon.svg' %}
+                        </button>
+                        <i class="fas fa-times cancel-search mr-2" style="display: none;"></i>
+                   </form>
+              </div>
+              <div class="card-body" data-mdb-perfect-scrollbar="true" style="position: relative;">
+
+                <table class="table mb-0" style="color: white;">
+                  <thead>
+                    <tr>
+                      <th scope="col">Domain</th>
+                      <th scope="col">Car served</th>
+                      <th scope="col">Rating</th>
+                      <th scope="col">Status</th>
+                      <th scope="col">Comments</th>
+                      <th scope="col">Dated</th>
+                    </tr>
+                  </thead>
+                  <tbody class="service_table_body">
+                  {% include 'service_table_rows.html' with services=services %}
+                  </tbody>
+                </table>
+
+              </div>
+{#              <div class="card-footer text-end p-3">#}
+{#                <button class="me-2 btn btn-link">Cancel</button>#}
+{#                <button class="btn btn-primary">Add Task</button>#}
+{#              </div>#}
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+{% endblock %}
