@@ -5,6 +5,7 @@ from django.conf.urls import url
 urlpatterns = [
     url(r'^find_mechanic/$', login_required(views.ListMechanic.as_view())),
     url(r'^hire_mechanic/(?P<mech_id>\d+)/$', login_required(views.HireMechanic.as_view())),
+    url(r'^close_ticket/$', login_required(views.CloseTicket.as_view())),
     # url(r'^receipts/$', login_required(views.Receipts.as_view())),
     # url(r'^receipts/delete_receipt/$', login_required(views.DeleteReceipt.as_view())),
     # url(r'^receipts/create_receipt/$', login_required(views.CreateReceipt.as_view())),

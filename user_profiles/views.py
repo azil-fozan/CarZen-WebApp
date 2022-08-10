@@ -194,17 +194,10 @@ class ProfileHistory(View):
             self.response_data['message'] = 'User Does not exist!'
             return JsonResponse(data=self.response_data)
 
-        # service_history = ServiceHistory.objects.filter(mech_id=user_id).values('catagory', 'car', 'rating', 'comments', 'created_on')
-        # for _ in service_history:
-        #     _.update({'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT), 'rem_rating': TOTAL_RATING - _['rating']})
-
-        # hostory_length = service_history.count()
-
         context = {
             'page_headding': 'Service History',
             'my_profile': my_profile,
             'user_full_name': User.objects.filter(pk=user_id).first().get_user_full_name(),
-            # 'services': list(service_history),
             'services': [],
         }
         return render(request, 'service_listing.html', context)
@@ -230,12 +223,10 @@ class ProfileHistory(View):
 
         service_history = service_history.order_by('-status', '-created_on')
 
-        service_history = service_history.values('catagory', 'car', 'rating', 'status', 'comments', 'created_on')
+        service_history = service_history.values('pk', 'catagory', 'car', 'rating', 'status', 'comments', 'created_on')
         for _ in service_history:
             _.update({'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
                       'rem_rating': TOTAL_RATING - _['rating']})
-
-        # hostory_length = service_history.count()
 
         self.response_data.update({
             'table_rows_html': render_to_string('service_table_rows.html', context={'services': list(service_history)}),

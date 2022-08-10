@@ -41,9 +41,4 @@ $(document).ready(function () {
         e.preventDefault();
         hire_mech($(this));
     });
-    // $(document).on('keyup', '#sevice_history_search_string', function (e) {
-    //     if (!$(this).val().length){
-    //         $('.cancel-search').click();
-    //     }
-    // });
 });

@@ -119,6 +119,34 @@ class HireMechanic(View):
         return JsonResponse(self.response_data)
 
 
+class CloseTicket(View):
+    def __init__(self):
+        super(CloseTicket, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(CloseTicket, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        rating = request.POST.get('rating')
+        comments = request.POST.get('comments')
+        ticket_id = int(request.POST.get('ticket_id', 0))
+
+        if not ticket_id:
+            self.response_data['message'] = 'Ticket does not exist!'
+            return JsonResponse(self.response_data)
+
+        hist_obj = ServiceHistory.objects.filter(pk=ticket_id).first()
+        hist_obj.rating = rating
+        hist_obj.comments = comments
+        hist_obj.status = 'Closed'
+        hist_obj.save()
+        self.response_data['success'] = True
+        self.response_data['message'] = 'Service Ticket successfully Closed!'
+
+        return JsonResponse(self.response_data)
+
+
 class Receipts(View):
     def __init__(self):
         super(Receipts, self).__init__()

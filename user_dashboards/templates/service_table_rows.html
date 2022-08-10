@@ -1,18 +1,19 @@
 {% load custom_template_tags %}
 {% for serv in services %}
   <tr>
+      <th style="display: none"><input style="display: none" name="service_ticket_number" value="{{ serv.pk }}"/></th>
       <th class="align-middle">
         <span class="ms-2">{{ serv.catagory }}</span>
       </th>
       <td class="align-middle">
         <span>{{ serv.car }}</span>
       </td>
-      <td class="align-middle">
-        <h6 class="mb-0">
+      <td class="align-middle col-1">
+        <h6 class="d-flex justify-content-between">
         {% if serv.rating %}
             <span class="text-black-50" style="font-size: 25px;">{% for _ in serv.rating|times %}&#9733;{% endfor %}{% for _ in serv.rem_rating|times %}&#9734;{% endfor %}</span>
         {% else %}
-            <button class="btn btn-sm btn-outline-success">Rate & Close</button>
+            <button class="btn btn-sm btn-outline-success rate_and_close">Rate & Close</button>
         {% endif %}
         </h6>
       </td>
