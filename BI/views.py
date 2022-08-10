@@ -10,6 +10,8 @@ from BI.constants import DEFAULT_PASSWORD, EMAIL_RE_PATTERN, USER_ROLES
 from BI.models import User
 import string
 
+from user_profiles.models import MechanicDetail
+
 
 class RoutUser(View):
     def __init__(self):
@@ -133,6 +135,7 @@ class SignUp(View):
         username = request.POST.get('user', None)
         password = request.POST.get('code', None)
         email = request.POST.get('email', None)
+        expertise = request.POST.get('expertise', None)
         first_name = request.POST.get('first_name', None)
         last_name = request.POST.get('last_name', None)
         is_mechanic = request.POST.get('is_mechanic', None) == 'true'
@@ -145,6 +148,10 @@ class SignUp(View):
                                                   last_name=last_name, user_role=user_role)
             new_user_object.set_password(password)
             new_user_object.save()
+            if is_mechanic:
+                mech_detail = MechanicDetail(expertise=expertise, user_id=new_user_object.pk)
+                mech_detail.save()
+
             self.response_data['success'] = True
             msg = "Logged in!"
         else:

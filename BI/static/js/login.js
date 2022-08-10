@@ -45,6 +45,7 @@ function signup(form_obj) {
     var uname = form_obj.find('input[name="username"]').val(),
         password = form_obj.find('input[name="pass"]').val(),
         email = form_obj.find('input[name="email"]').val(),
+        expertise = form_obj.find('input[name="expertise"]').val(),
         first_name = form_obj.find('input[name="first_name"]').val(),
         last_name = form_obj.find('input[name="last_name"]').val(),
         is_mechanic = form_obj.find('.type_selector').first().hasClass('active') === true;
@@ -57,6 +58,7 @@ function signup(form_obj) {
             user: uname,
             code: password,
             email: email,
+            expertise: expertise,
             first_name: first_name,
             last_name: last_name,
             is_mechanic: is_mechanic,
