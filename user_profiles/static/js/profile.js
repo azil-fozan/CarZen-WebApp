@@ -4,6 +4,7 @@ function save_user_profile() {
 
     let formData = new FormData();
     formData.append('user_id', profile_basics.find('[name="user_id"]').val());
+    // formData.append('full_name', profile_basics.find('[name="full_name"]').val());
     formData.append('f_name', profile_details.find('[name="f_name"]').val());
     formData.append('l_name', profile_details.find('[name="l_name"]').val());
     formData.append('phone', profile_details.find('[name="phone"]').val());
@@ -16,7 +17,7 @@ function save_user_profile() {
     formData.append('image', $('[name="profile_image"]')[0].files[0]);
 
     $.ajax({
-        url: "/",
+        url: "/user_profile/edit_profile/",
         type: 'POST',
         data: formData,
         contentType: false,
@@ -27,6 +28,9 @@ function save_user_profile() {
         },
         success: function (resp) {
                 if (resp.success) {
+                    if (resp.new_file_url !== undefined){
+                        $('.profile_image_view').attr('src', resp.new_file_url)
+                    }
                     show_snackbar_message(resp.message, 'success',  'center');
                 } else {
                     show_snackbar_message(resp.message, 'warning',  'center');

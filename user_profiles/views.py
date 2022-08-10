@@ -1,3 +1,5 @@
+import os
+from os.path import exists
 import sys
 import traceback
 import io
@@ -6,8 +8,11 @@ from django.db.models import Q
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from django.views import View
+from django.core.files.storage import FileSystemStorage
+import uuid
 
-from BI.constants import USER_ROLES_r
+from BI import settings
+from BI.constants import USER_ROLES_r, ALLOWED_IMAGE_TYPES, IMAGE_MIME_TYPES
 from BI.models import User
 from BI.utilities import execute_read_query
 from user_profiles.models import MechanicDetail
@@ -84,7 +89,53 @@ class EditProfile(View):
     def dispatch(self, request, *args, **kwargs):
         return super(EditProfile, self).dispatch(request, *args, **kwargs)
 
+    @staticmethod
+    def upload_image(myfile):
+        file_name = uuid.uuid4().hex
+        fs = FileSystemStorage()
+        filename = fs.save(f'{file_name}.{myfile.content_type.split("/")[-1]}', myfile)
+        uploaded_file_url = fs.url(filename)
+        return uploaded_file_url
+
     def post(self, request, *args, **kwargs):
-        request.POST.get('')
-        User.objects.filter(pk=2)
-        return JsonResponse(data={})
+        user_id = int(request.POST.get('user_id', 0))
+        # full_name = request.POST.get('full_name')
+        f_name = request.POST.get('f_name')
+        l_name = request.POST.get('l_name')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        Occupation = request.POST.get('Occupation')
+        country = request.POST.get('country')
+        state = request.POST.get('state')
+
+        new_user_image = request.FILES.get('image', None)
+        user_obj = User.objects.filter(pk=user_id).first()
+        if user_obj:
+            user_obj.first_name = f_name
+            user_obj.last_name = l_name
+            user_obj.full_name = f'{f_name} {l_name}'
+            user_obj.phone_number = phone
+            user_obj.address = address
+            user_obj.occupation = Occupation
+            user_obj.country = country
+            user_obj.state = state
+            if new_user_image:
+                # file_read = new_user_image.read()  # get binary data of image
+
+                name, extension = os.path.splitext(new_user_image.name)
+                extension = extension.lower()
+                if extension not in ALLOWED_IMAGE_TYPES or new_user_image.content_type != IMAGE_MIME_TYPES[extension]:
+                    return JsonResponse(data={'success': False, 'message': 'Not a valid file type'})
+                new_file_url = EditProfile.upload_image(new_user_image)
+                old_image = user_obj.image
+                path_to_old_file = os.path.join(settings.MEDIA_ROOT, old_image.split('/')[-1])
+                if exists(path_to_old_file):
+                    os.remove(path_to_old_file)
+                user_obj.image = new_file_url
+                self.response_data['new_file_url'] = new_file_url
+            user_obj.save()
+            self.response_data['message'] = 'Profie updated successfully!'
+            self.response_data['success'] = True
+        else:
+            self.response_data['message'] = 'User does not exist!'
+        return JsonResponse(data=self.response_data)
