@@ -44,13 +44,9 @@ class ListMechanic(View):
         context = {
             'page_headding': 'Find Mechanic',
             'mechanics': list(all_mechanics),
-            # 'table_headding_single': 'Receipt',
-            # 'table_headding_plural': 'Receipts',
-            # 'has_receipts': False,
-            # 'column_names': ['ID', 'Customer Name', 'Active Date', 'Total Amount', 'Paid Amount', 'Due Date', 'Status'],
-            # 'customers': Customer.objects.filter(created_by=request.user).values('id', 'name', 'reference')
         }
         return render(request, 'main_listing.html', context)
+
     def post(self, request, *args, **kwargs):
         data = Receipt.objects.filter(created_by=request.user).order_by('expiry_date')
         search_str = request.POST.get('search_query', '')
