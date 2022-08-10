@@ -91,11 +91,14 @@ class EditProfile(View):
 
     @staticmethod
     def upload_image(myfile):
-        file_name = uuid.uuid4().hex
-        fs = FileSystemStorage()
-        filename = fs.save(f'{file_name}.{myfile.content_type.split("/")[-1]}', myfile)
-        uploaded_file_url = fs.url(filename)
-        return uploaded_file_url
+        try:
+            file_name = uuid.uuid4().hex
+            fs = FileSystemStorage()
+            filename = fs.save(f'{file_name}.{myfile.content_type.split("/")[-1]}', myfile)
+            uploaded_file_url = fs.url(filename)
+            return uploaded_file_url
+        except:
+            return None
 
     def post(self, request, *args, **kwargs):
         user_id = int(request.POST.get('user_id', 0))
@@ -127,12 +130,16 @@ class EditProfile(View):
                 if extension not in ALLOWED_IMAGE_TYPES or new_user_image.content_type != IMAGE_MIME_TYPES[extension]:
                     return JsonResponse(data={'success': False, 'message': 'Not a valid file type'})
                 new_file_url = EditProfile.upload_image(new_user_image)
-                old_image = user_obj.image
-                path_to_old_file = os.path.join(settings.MEDIA_ROOT, old_image.split('/')[-1])
-                if exists(path_to_old_file):
-                    os.remove(path_to_old_file)
-                user_obj.image = new_file_url
-                self.response_data['new_file_url'] = new_file_url
+                if new_file_url:
+                    old_image = user_obj.image
+                    try:
+                        path_to_old_file = os.path.join(settings.MEDIA_ROOT, old_image.split('/')[-1])
+                        if exists(path_to_old_file):
+                            os.remove(path_to_old_file)
+                    except:
+                        pass
+                    user_obj.image = new_file_url
+                    self.response_data['new_file_url'] = new_file_url
             user_obj.save()
             self.response_data['message'] = 'Profie updated successfully!'
             self.response_data['success'] = True
