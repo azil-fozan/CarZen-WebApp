@@ -20,7 +20,7 @@
         <!-- Third party plugin CSS-->
         <link href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
-{#        <script src="{% static 'js/profile.js' %}"></script>#}
+        <script src="{% static 'js/mechanics.js' %}"></script>
 {% endblock %}
 
 {% block page_contents %}
@@ -30,11 +30,11 @@
           <div class="col-12">
 
             <div class="card">
-              <div class="card-header p-3 d-flex justify-content-between">
+              <div class="card-header p-3 d-flex justify-content-end">
 {#                <h5 class="mb-0"><i class="mr-2 fas fa-tasks me-2"></i>Task List</h5>#}
 {#                <h5 class="mt-2">{% if my_profile %}{{ request.user.get_user_full_name }}{% else %}{{ user_full_name }}{% endif %}'s profile</h5>#}
                   <form class="form-inline search-bar-wrap" id="search_mechanic">
-                        <input class="form-control form-style header-search" required id="sevice_mechanic" type="text"  placeholder="Search by name|experise" aria-label="Search">
+                        <input class="form-control form-style header-search" required id="mechanic_search_string" type="text"  placeholder="Search by name|experise" aria-label="Search">
                         <button class="search_sevice_history mx-2" type="submit">
                             {% include 'search_icon.svg' %}
                         </button>
@@ -52,7 +52,7 @@
                       <th scope="col">Contact</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody class="mechanics_table_body">
                   {% for mech in mechanics %}
                         <tr class="fw-normal">
                           <th>

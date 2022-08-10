@@ -48,34 +48,8 @@ class ListMechanic(View):
         return render(request, 'main_listing.html', context)
 
     def post(self, request, *args, **kwargs):
-        data = Receipt.objects.filter(created_by=request.user).order_by('expiry_date')
-        search_str = request.POST.get('search_query', '')
-        if search_str:
-            if search_str.isdigit():
-                data = data.filter(Q(customer__name__icontains=search_str)|Q(id=search_str))
-            else:
-                data = data.filter(customer__name__icontains=search_str)
-        response_data = []
-        total_amounts_data = execute_read_query(RECEIPTS_TOTAL_AMOUNTS.format(','.join([str(_.id) for _ in data])))
-        total_amounts_dict = {_[0]:round(int(_[1]), 2) for _ in total_amounts_data}
-
-        for row in data:
-            temp_dict = {}
-            temp_dict['id'] = row.id
-            temp_dict['customer__name'] = row.customer.name
-            temp_dict['active_date'] = row.active_date.strftime(GENERAL_DATE)
-            temp_dict['paid_amount'] = row.paid_amount
-            temp_dict['days_left'] = (row.expiry_date - timezone.now()).days
-            temp_dict['expiry_date'] = row.expiry_date.strftime(GENERAL_DATE)
-            temp_dict['alarm_color'] = ALARM_COLOR[temp_dict['days_left']]
-            temp_dict['status'] = row.status
-            temp_dict['total_amount'] = total_amounts_dict.get(row.id, 'No products added')
-            response_data.append(temp_dict)
-        response = {
-            'data': response_data,
-            'success': True
-        }
-        return JsonResponse(data=response)
+        a=2
+        return JsonResponse(data=self.response_data)
 
 
 
