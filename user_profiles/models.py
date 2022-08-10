@@ -28,7 +28,6 @@ class MechanicDetail(models.Model):
         db_table = 'mechanic_detail'
 
 
-
 class ServiceHistory(models.Model):
     mech_id = models.IntegerField()
     owner_id = models.IntegerField()
@@ -46,7 +45,6 @@ class ServiceHistory(models.Model):
     class Meta:
         managed = False
         db_table = 'service_history'
-
 
 
 class Receipt(models.Model):
