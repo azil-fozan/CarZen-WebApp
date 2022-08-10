@@ -87,12 +87,12 @@ aside a {
 }
 
 #page_contents section.scrollable {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: calc(100vh - 90px);
 }
 
 #receipts_table tbody.scrollable {
-  overflow-y: scroll;
+  overflow-y: auto;
   max-height: calc(100vh - 200px);
 }
 
@@ -1251,7 +1251,7 @@ pre code {
 
 .pre-scrollable {
   max-height: 340px;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .container {
@@ -2410,7 +2410,8 @@ pre code {
   /* Position */
   display: block;
   position:relative;
-  width:100%; overflow-y:scroll;
+  width:100%;
+  overflow-y:auto;
 }
 
 .table-scroll tr{
@@ -11298,8 +11299,20 @@ label {
 .history_single_box {
     border-style: dashed;
     border-color: #f4623a;
-    border-width: 2px;
+    border-width: 1px;
 
+}
+
+.review_comment_box {
+    border-style: dotted;
+    border-color: #f4623a;
+    border-width: 1px;
+    border-radius: 10px;
+}
+
+.scrollable_reviews {
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 /*  profiles end  */

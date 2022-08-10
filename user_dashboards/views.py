@@ -10,7 +10,7 @@ from openpyxl import load_workbook
 from openpyxl.styles.borders import Border, Side
 from num2words import num2words
 
-from BI.constants import USER_ROLES
+from BI.constants import USER_ROLES, TOTAL_RATING
 from BI.utilities import execute_read_query
 from user_dashboards.models import *
 from datetime import datetime
@@ -40,7 +40,7 @@ class ListMechanic(View):
             if _['id'] in mech_det_dict:
                 _.update({'expertise': mech_det_dict[_['id']]})
             name = _['full_name'] if _['full_name'] else f"{_['first_name']} {_['last_name']}"
-            _.update({'name': name, 'over_all_rating': _['rating'], 'rem_over_all_rating': 5-_['rating']})
+            _.update({'name': name, 'over_all_rating': _['rating'], 'rem_over_all_rating': TOTAL_RATING-_['rating']})
         context = {
             'page_headding': 'Find Mechanic',
             'mechanics': list(all_mechanics),

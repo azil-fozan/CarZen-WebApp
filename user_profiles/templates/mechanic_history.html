@@ -10,6 +10,11 @@
     </div>
     <div class="ml-1">
         <label class="labels mr-2">Rating:</label>
-        <span class="text-black-50" style="font-size: 25px;">{% for _ in rating|times %}&#9733;{% endfor %}{% for _ in 7|add:"-5"|times %}&#9734;{% endfor %}</span>
+        <span class="text-black-50" style="font-size: 25px;">{% for _ in rating|times %}&#9733;{% endfor %}{% for _ in rem_rating|times %}&#9734;{% endfor %}</span>
     </div>
+    <div class="ml-1">
+        <label class="labels p-0 col-12">Comments:</label>
+        <span class="text-black-50 p-1 review_comment_box" style="font-size: 12px;">{{ comments }}</span>
+    </div>
+
 </div>

@@ -27,6 +27,24 @@ class MechanicDetail(models.Model):
 
 
 
+class ServiceHistory(models.Model):
+    mech_id = models.IntegerField()
+    owner_id = models.IntegerField()
+    catagory = models.CharField(max_length=30)
+    rating = models.IntegerField(default=5)
+    comments = models.TextField(default=None)
+    car = models.CharField(max_length=30, default=None, db_column='car_info')
+    vehicle = models.IntegerField(default=0)
+    expected_bill = models.IntegerField(default=0)
+    total_bill = models.IntegerField(default=0)
+    created_on = models.DateTimeField(default=get_utc_time)
+
+    class Meta:
+        managed = False
+        db_table = 'service_history'
+
+
+
 class Receipt(models.Model):
     status = models.CharField(max_length=30)
     paid_amount = models.IntegerField()

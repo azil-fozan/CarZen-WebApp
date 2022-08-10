@@ -12,10 +12,10 @@ from django.core.files.storage import FileSystemStorage
 import uuid
 
 from BI import settings
-from BI.constants import USER_ROLES_r, ALLOWED_IMAGE_TYPES, IMAGE_MIME_TYPES
+from BI.constants import USER_ROLES_r, ALLOWED_IMAGE_TYPES, IMAGE_MIME_TYPES, TOTAL_RATING
 from BI.models import User
 from BI.utilities import execute_read_query
-from user_profiles.models import MechanicDetail
+from user_profiles.models import MechanicDetail, ServiceHistory
 
 
 class UserProfile(View):
@@ -66,12 +66,37 @@ class UserProfile(View):
             }
         return user_details
 
+
+    def get_user_history(self, request, user_id) -> dict:
+        service_history = {}
+        history = []
+        user = User.objects.filter(id=user_id).first()
+        if user and user.user_role == 1 or user_id == request.user.id:
+            if user.user_role == 1:
+                service_hist = ServiceHistory.objects.filter(mech_id=user_id).order_by('-created_on')[:3]
+                for hist in service_hist:
+                    history.append({
+                        'cat': hist.catagory,
+                        'car': hist.car,
+                        'rat': hist.rating,
+                        'rem_rat': TOTAL_RATING - hist.rating,
+                        'comments': hist.comments,
+                    })
+
+            service_history = {
+                'service_history': history
+            }
+        return service_history
+
     def get(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id', request.user.id)
         context = {
             'page_headding': 'My Profile' if request.user.id == user_id else f'{User.objects.filter(pk=user_id).first().get_user_full_name()}\'s Profile',
         }
+
         context.update(self.get_user_details(request, user_id=user_id))
+        context.update(self.get_user_history(request, user_id=user_id))
+
         if not context.get('user_type', None):
             return HttpResponseNotFound("User not found!\n<a href='/welcome_page/'>Back Home</a>")
         return render(request, 'basic_profile.html', context)
