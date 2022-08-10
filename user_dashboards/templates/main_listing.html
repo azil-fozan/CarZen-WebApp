@@ -34,7 +34,7 @@
 {#                <h5 class="mb-0"><i class="mr-2 fas fa-tasks me-2"></i>Task List</h5>#}
 {#                <h5 class="mt-2">{% if my_profile %}{{ request.user.get_user_full_name }}{% else %}{{ user_full_name }}{% endif %}'s profile</h5>#}
                   <form class="form-inline search-bar-wrap" id="search_mechanic">
-                        <input class="form-control form-style header-search" required id="mechanic_search_string" type="text"  placeholder="Search by name|experise" aria-label="Search">
+                        <input class="form-control form-style header-search" required id="mechanic_search_string" type="text"  placeholder="Search by name | experise | address" aria-label="Search">
                         <button class="search_sevice_history mx-2" type="submit">
                             {% include 'search_icon.svg' %}
                         </button>
