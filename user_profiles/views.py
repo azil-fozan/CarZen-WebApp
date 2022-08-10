@@ -207,7 +207,8 @@ class ProfileHistory(View):
         my_profile = True
         if user_id:
             my_profile = False
-        user_id = request.user.id
+        else:
+            user_id = request.user.id
 
         search_str = request.POST.get('search_str')
         if not user_id:
