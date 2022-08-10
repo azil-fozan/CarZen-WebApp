@@ -46,6 +46,7 @@ function signup(form_obj) {
         password = form_obj.find('input[name="pass"]').val(),
         email = form_obj.find('input[name="email"]').val(),
         expertise = form_obj.find('input[name="expertise"]').val(),
+        address = form_obj.find('input[name="address"]').val(),
         first_name = form_obj.find('input[name="first_name"]').val(),
         last_name = form_obj.find('input[name="last_name"]').val(),
         is_mechanic = form_obj.find('.type_selector').first().hasClass('active') === true;
@@ -59,6 +60,7 @@ function signup(form_obj) {
             code: password,
             email: email,
             expertise: expertise,
+            address: address,
             first_name: first_name,
             last_name: last_name,
             is_mechanic: is_mechanic,

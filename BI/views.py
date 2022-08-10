@@ -136,6 +136,7 @@ class SignUp(View):
         password = request.POST.get('code', None)
         email = request.POST.get('email', None)
         expertise = request.POST.get('expertise', None)
+        address = request.POST.get('address', None)
         first_name = request.POST.get('first_name', None)
         last_name = request.POST.get('last_name', None)
         is_mechanic = request.POST.get('is_mechanic', None) == 'true'
@@ -145,7 +146,8 @@ class SignUp(View):
             msg = 'User aleady Exists, please login!'
         elif username and password and re.fullmatch(EMAIL_RE_PATTERN, email):
             new_user_object = User.objects.create(email=email, username=username, first_name=first_name,
-                                                  last_name=last_name, user_role=user_role)
+                                                  last_name=last_name, user_role=user_role,
+                                                  address=address)
             new_user_object.set_password(password)
             new_user_object.save()
             if is_mechanic:

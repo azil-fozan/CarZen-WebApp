@@ -45,7 +45,7 @@ class User(AbstractBaseUser):
     last_login = models.DateTimeField(blank=True)
     admin = models.ForeignKey('User', null=True, db_column='admin', on_delete=CASCADE)
     phone_number = models.CharField(max_length=40, null=True, blank=True)
-    address = models.CharField(max_length=40, null=True, blank=True)
+    address = models.CharField(max_length=50, null=True, blank=True)
     occupation = models.CharField(max_length=40, null=True, blank=True)
     country = models.CharField(max_length=40, null=True, blank=True)
     state = models.CharField(max_length=40, null=True, blank=True)
