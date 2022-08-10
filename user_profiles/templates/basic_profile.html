@@ -56,7 +56,9 @@
                             <span class="text-black-50" style="font-size: 25px;">{% for _ in over_all_rating|times %}&#9733;{% endfor %}{% for _ in rem_over_all_rating|times %}&#9734;{% endfor %}</span>
                         </div>
                         <span class="text-black-50 labels">Member Since 25 May 2020</span>
-{#                        <button class="btn btn-outline-success px-5 mt-4 hire_mechanic">Hire</button>#}
+                        {% ifequal user_id request.user.pk %}{% else %}
+                            <button class="btn btn-outline-success px-5 mt-4 hire_mechanic">Hire</button>
+                        {% endifequal %}
                     </div>
                 </div>
                 <div class="col-md-5 border-right profile_details">
