@@ -55,12 +55,12 @@
             <a class="btn" href="/service/">Service</a></div>
         <hr>
         <div id="logout_div">
-            <a data-toggle="tooltip"
+            <a class="d-flex justify-content-center" data-toggle="tooltip"
                data-placement="right"
                title="logout"
                href="/logout/">
-                <svg width="70" height="70" ><use href="{% static "images/icons/logout.svg" %}"></use></svg>
-{#                {% include "images/icons/logout.svg" %}#}
+{#                <svg width="70" height="70" ><use href="{% static "images/icons/logout.svg" %}"></use></svg>#}
+                {% include "logout.svg" %}
             </a>
         </div>
 

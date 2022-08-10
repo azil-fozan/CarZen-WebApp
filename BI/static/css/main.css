@@ -62,7 +62,7 @@ aside a {
   position: absolute;
   bottom: 0px;
   display: flex;
-  height: 70px;
+  height: 40px;
   justify-content: center;
 }
 
@@ -8196,6 +8196,10 @@ button.bg-dark:focus {
   width: 25% !important;
 }
 
+.w-40 {
+  width: 40% !important;
+}
+
 .w-50 {
   width: 50% !important;
 }
@@ -11311,8 +11315,18 @@ label {
 }
 
 .scrollable_reviews {
-  max-height: 400px;
-  overflow-y: auto;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.listing_comment_box {
+    overflow-y: auto;
+    max-height: 80px;
+}
+
+a.disabled {
+  pointer-events: none;
+  color: lightgray;
 }
 
 /*  profiles end  */
