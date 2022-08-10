@@ -33,7 +33,7 @@
             <div class="card">
               <div class="card-header p-3 d-flex justify-content-between">
 {#                <h5 class="mb-0"><i class="mr-2 fas fa-tasks me-2"></i>Task List</h5>#}
-                <h5 class="mt-2">{{ request.user.get_user_full_name }}'s profile</h5>
+                <h5 class="mt-2">{% if my_profile %}{{ request.user.get_user_full_name }}{% else %}{{ user_full_name }}{% endif %}'s profile</h5>
                   <form class="form-inline search-bar-wrap" id="search_sevice_history">
                         <input class="form-control form-style header-search" required id="sevice_history_search_string" type="text"  placeholder="Search serivce by caragory or car" aria-label="Search">
                         <button class="search_sevice_history mx-2" type="submit">

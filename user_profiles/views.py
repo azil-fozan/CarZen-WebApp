@@ -184,7 +184,12 @@ class ProfileHistory(View):
         return super(ProfileHistory, self).dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        user_id = kwargs.get('user_id', request.user.id)
+        user_id = kwargs.get('user_id')
+        my_profile = True
+        if user_id:
+            my_profile = False
+        else:
+            user_id = request.user.id
         if not user_id:
             self.response_data['message'] = 'User Does not exist!'
             return JsonResponse(data=self.response_data)
@@ -197,6 +202,8 @@ class ProfileHistory(View):
 
         context = {
             'page_headding': 'Service History',
+            'my_profile': my_profile,
+            'user_full_name': User.objects.filter(pk=user_id).first().get_user_full_name(),
             # 'services': list(service_history),
             'services': [],
         }

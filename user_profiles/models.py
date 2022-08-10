@@ -31,7 +31,7 @@ class ServiceHistory(models.Model):
     mech_id = models.IntegerField()
     owner_id = models.IntegerField()
     catagory = models.CharField(max_length=30)
-    rating = models.IntegerField(default=5)
+    rating = models.IntegerField(default=0)
     comments = models.TextField(default=None)
     service_info = models.TextField(default=None)
     car = models.CharField(max_length=30, default=None, db_column='car_info')

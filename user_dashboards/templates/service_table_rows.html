@@ -9,14 +9,18 @@
       </td>
       <td class="align-middle">
         <h6 class="mb-0">
+        {% if serv.rating %}
             <span class="text-black-50" style="font-size: 25px;">{% for _ in serv.rating|times %}&#9733;{% endfor %}{% for _ in serv.rem_rating|times %}&#9734;{% endfor %}</span>
+        {% else %}
+            <button class="btn btn-sm btn-outline-success">Rate & Close</button>
+        {% endif %}
         </h6>
       </td>
       <td class="align-middle" style="color: {% ifequal serv.status "Closed" %}Green{% else %}Red{% endifequal  %};">
           <div class="listing_comment_box">{{ serv.status }}</div>
       </td>
       <td class="align-middle w-40">
-          <div class="listing_comment_box">{{ serv.comments }}</div>
+          <{% ifequal serv.status 'Open'%}textarea{% else %}div{% endifequal %} class="{% ifequal serv.status 'Open'%} w-100 {% endifequal %}listing_comment_box">{{ serv.comments }}</{% ifequal serv.status 'Open'%}textarea{% else %}div{% endifequal %}>
       </td>
       <td class="align-middle">
           <span>{{ serv.created_on }}</span>
