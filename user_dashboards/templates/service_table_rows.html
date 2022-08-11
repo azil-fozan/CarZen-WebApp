@@ -8,6 +8,12 @@
       <td class="align-middle">
         <span>{{ serv.car }}</span>
       </td>
+      {% if my_profile %}
+          <td class="align-middle">
+            <span>{% if user_role == 1 %}{{ serv.customer }}{% else %}{{ serv.mechanic }}{% endif %}</span>
+          </td>
+      {% endif %}
+
       <td class="align-middle col-1">
         <h6 class="d-flex justify-content-between">
         {% if serv.rating %}

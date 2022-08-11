@@ -1,3 +1,11 @@
+SELECT_RATING_OPTIONS = `<select class="form-control" style="min-width: 60%" name="rating">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option selected value="5">5</option>
+                         </select>`;
+
 function load_services(page=1){
     var user_id = $('#user_id').val(),
         search_str = $('#sevice_history_search_string').val();
@@ -31,10 +39,9 @@ function load_services(page=1){
 }
 
 
-function close_ticket(This=1){
-    // debugger;
+function close_ticket(This){
     var row = This.closest('tr');
-    var rating = row.find('input').val(),
+    var rating = row.find('select').val(),
         comments = row.find('textarea').val(),
         ticket_id = row.find('[name="service_ticket_number"]').val();
 
@@ -82,7 +89,7 @@ $(document).ready(function () {
     });
     $(document).on('click', '.rate_and_close', function (e) {
         // $(this).append('<input class="form-control m-1" type="text" name="rating" />');
-        $('<input class="form-control w-50" type="number" min="1" max="5" placeholder="1-5" name="rating" />').insertBefore($(this));
+        $($.parseHTML(SELECT_RATING_OPTIONS)).insertBefore($(this));
         $(this).text('Close');
         $(this).removeClass('rate_and_close');
         $(this).addClass('close_ticket');

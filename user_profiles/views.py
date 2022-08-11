@@ -82,7 +82,7 @@ class UserProfile(View):
                         'car': hist.car,
                         'rat': hist.rating,
                         'rem_rat': TOTAL_RATING - hist.rating,
-                        'comments': hist.comments,
+                        'comments': hist.comments if hist.comments else '',
                     })
 
             service_history = {
@@ -223,13 +223,26 @@ class ProfileHistory(View):
 
         service_history = service_history.order_by('-status', '-created_on')
 
-        service_history = service_history.values('pk', 'catagory', 'car', 'rating', 'status', 'comments', 'created_on')
-        for _ in service_history:
-            _.update({'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
-                      'rem_rating': TOTAL_RATING - _['rating']})
+        service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id', 'rating', 'status', 'comments', 'created_on')
 
+        owners = set([_['owner_id'] for _ in service_history])
+        mechs = set([_['mech_id'] for _ in service_history])
+        user_names = User.objects.filter(pk__in=list(set(list(owners) + list(mechs)))).values('pk', 'full_name')
+        user_names = {int(_['pk']): _['full_name'] for _ in user_names}
+        for _ in service_history:
+            _.update({
+                'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
+                'rem_rating': TOTAL_RATING - _['rating'],
+                'customer': user_names[_['owner_id']],
+                'mechanic': user_names[_['mech_id']],
+            })
+        context = {
+            'services': list(service_history),
+            'my_profile': my_profile,
+            'user_role': request.user.user_role
+        }
         self.response_data.update({
-            'table_rows_html': render_to_string('service_table_rows.html', context={'services': list(service_history)}),
+            'table_rows_html': render_to_string('service_table_rows.html', context=context),
             'success': True
         })
         return JsonResponse(data=self.response_data)

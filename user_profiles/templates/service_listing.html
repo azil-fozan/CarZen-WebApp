@@ -49,6 +49,9 @@
                     <tr>
                       <th scope="col">Domain</th>
                       <th scope="col">Car served</th>
+                      {% if my_profile %}
+                          <th scope="col">{% if request.user.user_role == 1 %}Customer{% else %}Mechanic{% endif %}</th>
+                      {% endif %}
                       <th scope="col">Rating</th>
                       <th scope="col">Status</th>
                       <th scope="col">Comments</th>

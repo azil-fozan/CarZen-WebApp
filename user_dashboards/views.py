@@ -122,7 +122,7 @@ class CloseTicket(View):
         return super(CloseTicket, self).dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        rating = request.POST.get('rating')
+        rating = int(request.POST.get('rating', 0)) % TOTAL_RATING
         comments = request.POST.get('comments')
         ticket_id = int(request.POST.get('ticket_id', 0))
 
@@ -132,7 +132,7 @@ class CloseTicket(View):
 
         hist_obj = ServiceHistory.objects.filter(pk=ticket_id).first()
         hist_obj.rating = rating
-        hist_obj.comments = comments
+        hist_obj.comments = comments if comments else None
         hist_obj.status = 'Closed'
         hist_obj.save()
         self.response_data['success'] = True

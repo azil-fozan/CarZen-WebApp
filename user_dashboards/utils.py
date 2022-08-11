@@ -29,3 +29,34 @@ def download_file(bucket, key):
     s3_data = s3.get_object(Bucket= bucket, Key = key)
     contents = s3_data['Body'].read()  # your Excel's essence, pretty much a stream
     return contents
+
+
+# yar sentiment analysis is deep learning, labled data chahiay isky liay.
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM,Dense, Dropout, SpatialDropout1D
+from tensorflow.keras.layers import Embedding
+embedding_vector_length = 32
+
+def define_and_train_for_SA():
+    vocab_size = len(tokenizer.word_index) + 1
+    model = Sequential()
+    model.add(Embedding(vocab_size, embedding_vector_length, input_length=200))
+    model.add(SpatialDropout1D(0.25))
+    model.add(LSTM(50, dropout=0.5, recurrent_dropout=0.5))
+    model.add(Dropout(0.2))
+    model.add(Dense(1, activation='sigmoid'))
+    model.compile(loss='binary_crossentropy',optimizer='adam', metrics=['accuracy'])
+    print(model.summary())
+    history = model.fit(padded_sequence,sentiment_label[0],validation_split=0.2, epochs=5, batch_size=32)
+
+def predict_sentiment(text):
+    tw = tokenizer.texts_to_sequences([text])
+    tw = pad_sequences(tw,maxlen=200)
+    prediction = int(model.predict(tw).round().item())
+    print("Predicted label: ", sentiment_label[1][prediction])
+
+# test_sentence1 = "I enjoyed my journey on this flight."
+# predict_sentiment(test_sentence1)
+# test_sentence2 = "This is the worst flight experience of my life!"
+# predict_sentiment(test_sentence2)
