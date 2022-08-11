@@ -33,9 +33,9 @@ def download_file(bucket, key):
 
 # yar sentiment analysis is deep learning, labled data chahiay isky liay.
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM,Dense, Dropout, SpatialDropout1D
-from tensorflow.keras.layers import Embedding
+# from tensorflow.keras.models import Sequential
+# from tensorflow.keras.layers import LSTM,Dense, Dropout, SpatialDropout1D
+# from tensorflow.keras.layers import Embedding
 embedding_vector_length = 32
 
 def define_and_train_for_SA():
