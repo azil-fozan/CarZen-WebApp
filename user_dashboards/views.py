@@ -1,6 +1,7 @@
 import sys
 import traceback
 import io
+import math
 
 from django.db.models import Q
 from django.http import JsonResponse, HttpResponse, HttpResponseNotFound
@@ -135,6 +136,12 @@ class CloseTicket(View):
         hist_obj.comments = comments if comments else None
         hist_obj.status = 'Closed'
         hist_obj.save()
+
+        # updating mechanic total ratings
+        all_ratings = ServiceHistory.objects.filter(mech_id=hist_obj.mech_id).values_list('rating', flat=True)
+        updated_rating = math.ceil(sum(all_ratings) / len(all_ratings))
+        User.objects.filter(pk=hist_obj.mech_id).update(rating=updated_rating)
+
         self.response_data['success'] = True
         self.response_data['message'] = 'Service Ticket successfully Closed!'
 

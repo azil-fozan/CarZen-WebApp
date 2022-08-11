@@ -221,7 +221,7 @@ class ProfileHistory(View):
         if search_str:
             service_history = service_history.filter(Q(catagory__icontains=search_str) | Q(car__icontains=search_str))
 
-        service_history = service_history.order_by('-status', '-created_on')
+        service_history = service_history.order_by('-status', '-rating', '-created_on')
 
         service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id', 'rating', 'status', 'comments', 'created_on')
 
