@@ -145,6 +145,11 @@
     $(document).on('click', '.type_selector', function (e) {
         $('.type_selector').removeClass('active');
         $(this).addClass('active');
+        if ($(this).text()==="CAR OWNER"){
+            $(this).closest('#login_form').find('[name="expertise"]').attr('placeholder', 'Occupation');
+        } else {
+            $(this).closest('#login_form').find('[name="expertise"]').attr('placeholder', 'Expertise');
+        }
     });
 </script>
     <style>

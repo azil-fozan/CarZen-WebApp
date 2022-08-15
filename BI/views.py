@@ -148,6 +148,8 @@ class SignUp(View):
             new_user_object = User.objects.create(email=email, username=username, first_name=first_name,
                                                   last_name=last_name, user_role=user_role,
                                                   address=address, is_active=False)
+            if not is_mechanic:
+                new_user_object.occupation = expertise
             new_user_object.set_password(password)
             new_user_object.save()
             if is_mechanic:
