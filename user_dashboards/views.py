@@ -108,7 +108,8 @@ class HireMechanic(View):
         service_info = request.POST.get('service_info')
 
         hist_obj = ServiceHistory(mech_id=mech_id, owner_id=request.user.pk, catagory=catagory,
-                                  car=car_info, service_info=service_info, appointment_datetime=appointment_datetime)
+                                  car=car_info, service_info=service_info, appointment_datetime=appointment_datetime,
+                                  appointed=False)
         hist_obj.save()
         self.response_data['success'] = True
         self.response_data['message'] = 'Service Ticket successfully opened!'

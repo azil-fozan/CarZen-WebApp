@@ -42,6 +42,7 @@ class ServiceHistory(models.Model):
     status_owner = models.CharField(max_length=30, default='Open')
     vehicle = models.IntegerField(default=0)
     appointment_datetime = models.DateTimeField(default=None)
+    appointed = models.BooleanField(default=False)
     expected_bill = models.IntegerField(default=0)
     total_bill = models.IntegerField(default=0)
     created_on = models.DateTimeField(default=get_utc_time)

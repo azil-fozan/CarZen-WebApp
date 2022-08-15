@@ -216,33 +216,37 @@ class ProfileHistory(View):
             return JsonResponse(data=self.response_data)
         if my_profile:
             service_history = ServiceHistory.objects.filter(Q(owner_id=user_id)|Q(mech_id=user_id))
+            service_history = service_history.filter(appointed=True)
         else:
             service_history = ServiceHistory.objects.filter(mech_id=user_id, status='Closed')
         if search_str:
             service_history = service_history.filter(Q(catagory__icontains=search_str) | Q(car__icontains=search_str))
 
-        service_history = service_history.order_by('-status', '-rating', '-created_on')
+        if request.user.user_role == 2:
+            service_history = service_history.order_by('-status_owner', '-rating_owner', '-created_on')
+        else:
+            service_history = service_history.order_by('-status', '-rating', '-created_on')
 
         service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id',
                                                  'rating', 'rating_owner',
                                                  'status', 'status_owner',
                                                  'comments', 'comments_owner',
-                                                 'created_on')
+                                                 'appointed', 'created_on')
 
         owners = set([_['owner_id'] for _ in service_history])
         mechs = set([_['mech_id'] for _ in service_history])
-        user_names = User.objects.filter(pk__in=list(set(list(owners) + list(mechs)))).values('pk', 'full_name')
-        user_names = {int(_['pk']): _['full_name'] for _ in user_names}
+        user_names = User.objects.filter(pk__in=list(set(list(owners) + list(mechs))))
+        user_names = {int(_.pk): _.get_user_full_name() for _ in user_names}
         for _ in service_history:
             _.update({
                 'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
-                'rem_rating': TOTAL_RATING - _['rating_owner'],
+                'rem_rating': TOTAL_RATING - (_['rating_owner'] if request.user.user_role == 2 else _['rating']),
                 'customer': user_names[_['owner_id']],
                 'mechanic': user_names[_['mech_id']],
             })
 
             # history will always show rated by owner
-            if True or request.user.user_role == 2:
+            if request.user.user_role == 2:
                 _['rating'] = _['rating_owner']
                 _['status'] = _['status_owner']
                 _['comments'] = _['comments_owner']

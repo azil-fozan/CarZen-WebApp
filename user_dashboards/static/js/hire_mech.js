@@ -1,6 +1,7 @@
 function hire_mech(This){
     var catagory = This.find('[name="catagory"]').val(),
         car_info = This.find('[name="car_info"]').val(),
+        appointment_datetime = This.find('[name="appointment_datetime"]').val(),
         service_info = This.find('[name="service_info"]').val();
 
     $.ajax({
@@ -10,6 +11,7 @@ function hire_mech(This){
         data: {
             catagory: catagory,
             car_info: car_info,
+            appointment_datetime: moment(appointment_datetime).format('YYYY-MM-DD hh:mm'),
             service_info: service_info,
             csrfmiddlewaretoken: window.csrfToken
         },

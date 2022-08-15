@@ -95,14 +95,22 @@
                     <div class="testbox">
                           <form id="hire_mech_form" action="/">
     {#                        <h1>Bank Customer Feedback Form</h1>#}
-                            <h6>Service Catagory<span>*</span></h6>
-                                <input disabled class="form-control my-2" type="text" name="catagory" value="{{ mechanic_expertise }}"/>
-                              <h6>Car/Vehicle Name<span>*</span></h6>
-                                <input class="form-control my-2" type="text" name="car_info" />
-                              <h6>Service Detail (optional)</h6>
-                                  <textarea class="form-control my-2" rows="5" name="service_info"></textarea>
+                              <div class="d-flex justify-content-center">
+                                  <div class="col-8 pl-0">
+                                      <h6>Service Catagory<span class="red-font">*</span></h6>
+                                        <input disabled class="form-control my-2" type="text" name="catagory" value="{{ mechanic_expertise }}"/>
+                                  </div>
+                                  <div class="col-4 px-0">
+                                      <h6>Pick slot<span class="red-font">*</span></h6>
+                                        <input class="form-control my-2" required type="datetime-local" name="appointment_datetime" value=""/>
+                                  </div>
+                              </div>
+                              <h6>Car/Vehicle Name<span class="red-font">*</span></h6>
+                                <input class="form-control my-2" type="text" required name="car_info" />
+                              <h6>Service Detail (optional)<span class="red-font">*</span></h6>
+                                  <textarea class="form-control my-2" rows="5" required name="service_info"></textarea>
                             <div class="d-flex justify-content-center">
-                              <button class="btn btn-success px-5 mt-2" type="submit" href="/">Hire</button>
+                              <button class="btn btn-success px-5 mt-2" type="submit" href="/">Request Appointment</button>
                             </div>
                           </form>
                     </div>
