@@ -223,7 +223,11 @@ class ProfileHistory(View):
 
         service_history = service_history.order_by('-status', '-rating', '-created_on')
 
-        service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id', 'rating', 'status', 'comments', 'created_on')
+        service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id',
+                                                 'rating', 'rating_owner',
+                                                 'status', 'status_owner',
+                                                 'comments', 'comments_owner',
+                                                 'created_on')
 
         owners = set([_['owner_id'] for _ in service_history])
         mechs = set([_['mech_id'] for _ in service_history])
@@ -232,10 +236,17 @@ class ProfileHistory(View):
         for _ in service_history:
             _.update({
                 'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
-                'rem_rating': TOTAL_RATING - _['rating'],
+                'rem_rating': TOTAL_RATING - _['rating_owner'],
                 'customer': user_names[_['owner_id']],
                 'mechanic': user_names[_['mech_id']],
             })
+
+            # history will always show rated by owner
+            if True or request.user.user_role == 2:
+                _['rating'] = _['rating_owner']
+                _['status'] = _['status_owner']
+                _['comments'] = _['comments_owner']
+
         context = {
             'services': list(service_history),
             'my_profile': my_profile,
