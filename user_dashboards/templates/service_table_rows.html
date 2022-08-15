@@ -26,6 +26,11 @@
       <td class="align-middle" style="color: {% ifequal serv.status "Closed" %}Green{% else %}Red{% endifequal  %};">
           <div class="listing_comment_box">{{ serv.status }}</div>
       </td>
+      {% if my_profile %}
+          <td class="align-middle font-weight-bold" style="color: black;">
+              <div class="listing_comment_box">{{ serv.expected_bill }}</div>
+          </td>
+      {% endif %}
       <td class="align-middle w-40">
           <{% ifequal serv.status 'Open'%}textarea placeholder="Add comment"{% else %}div{% endifequal %} class="{% ifequal serv.status 'Open'%} w-100 {% endifequal %}listing_comment_box">{{ serv.comments|default_if_none:"" }}</{% ifequal serv.status 'Open'%}textarea{% else %}div{% endifequal %}>
       </td>

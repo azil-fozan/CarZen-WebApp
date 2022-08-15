@@ -234,7 +234,7 @@ class ProfileHistory(View):
                                                  'rating', 'rating_owner',
                                                  'status', 'status_owner',
                                                  'comments', 'comments_owner',
-                                                 'appointed', 'created_on')
+                                                 'appointed', 'created_on', 'expected_bill')
 
         owners = set([_['owner_id'] for _ in service_history])
         mechs = set([_['mech_id'] for _ in service_history])
