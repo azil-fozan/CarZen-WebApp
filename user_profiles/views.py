@@ -73,17 +73,19 @@ class UserProfile(View):
         service_history = {}
         history = []
         user = User.objects.filter(id=user_id).first()
-        if user and user.user_role == 1 or user_id == request.user.id:
+        if user and (user.user_role == 1 or user_id == request.user.id):
             if user.user_role == 1:
-                service_hist = ServiceHistory.objects.filter(mech_id=user_id).order_by('-created_on')[:3]
-                for hist in service_hist:
-                    history.append({
-                        'cat': hist.catagory,
-                        'car': hist.car,
-                        'rat': hist.rating,
-                        'rem_rat': TOTAL_RATING - hist.rating,
-                        'comments': hist.comments if hist.comments else '',
-                    })
+                service_hist = ServiceHistory.objects.filter(mech_id=user_id, status='Closed').order_by('-created_on')[:3]
+            else:
+                service_hist = ServiceHistory.objects.filter(owner_id=user_id, status_owner='Closed').order_by('-created_on')[:3]
+            for hist in service_hist:
+                history.append({
+                    'cat': hist.catagory,
+                    'car': hist.car,
+                    'rat': hist.rating,
+                    'rem_rat': TOTAL_RATING - hist.rating,
+                    'comments': hist.comments if hist.comments else '',
+                })
 
             service_history = {
                 'service_history': history
@@ -205,7 +207,7 @@ class ProfileHistory(View):
     def post(self, request, *args, **kwargs):
         user_id = kwargs.get('user_id')
         my_profile = True
-        if user_id:
+        if user_id and int(user_id) != request.user.pk:
             my_profile = False
         else:
             user_id = request.user.id

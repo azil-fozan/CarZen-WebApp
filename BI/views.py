@@ -147,7 +147,7 @@ class SignUp(View):
         elif username and password and re.fullmatch(EMAIL_RE_PATTERN, email):
             new_user_object = User.objects.create(email=email, username=username, first_name=first_name,
                                                   last_name=last_name, user_role=user_role,
-                                                  address=address)
+                                                  address=address, is_active=False)
             new_user_object.set_password(password)
             new_user_object.save()
             if is_mechanic:

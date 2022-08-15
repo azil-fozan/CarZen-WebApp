@@ -51,7 +51,9 @@
                                 </div>
                             </div>
                         </span>
-                        <span class="text-black-50">Deals in {{ expertise }}</span>
+                        {% ifequal user_type 'MECHANIC' %}
+                            <span class="text-black-50">Deals in {{ expertise }}</span>
+                        {% endifequal %}
                         <div class="ml-1">
                             <span class="text-black-50" style="font-size: 25px;">{% for _ in over_all_rating|times %}&#9733;{% endfor %}{% for _ in rem_over_all_rating|times %}&#9734;{% endfor %}</span>
                         </div>
