@@ -104,9 +104,11 @@ class HireMechanic(View):
 
         catagory = request.POST.get('catagory')
         car_info = request.POST.get('car_info')
+        appointment_datetime = request.POST.get('appointment_datetime')
         service_info = request.POST.get('service_info')
 
-        hist_obj = ServiceHistory(mech_id=mech_id, owner_id=request.user.pk, catagory=catagory, car=car_info, service_info=service_info)
+        hist_obj = ServiceHistory(mech_id=mech_id, owner_id=request.user.pk, catagory=catagory,
+                                  car=car_info, service_info=service_info, appointment_datetime=appointment_datetime)
         hist_obj.save()
         self.response_data['success'] = True
         self.response_data['message'] = 'Service Ticket successfully opened!'
@@ -132,9 +134,15 @@ class CloseTicket(View):
             return JsonResponse(self.response_data)
 
         hist_obj = ServiceHistory.objects.filter(pk=ticket_id).first()
-        hist_obj.rating = rating
-        hist_obj.comments = comments if comments else None
-        hist_obj.status = 'Closed'
+        if request.user.user_role == 1:
+            hist_obj.rating = rating
+            hist_obj.status = 'Closed'
+            hist_obj.comments = comments if comments else None
+        else:
+            hist_obj.rating_owner = rating
+            hist_obj.status_owner = 'Closed'
+            hist_obj.comments_owner = comments if comments else None
+
         hist_obj.save()
 
         # updating mechanic total ratings
