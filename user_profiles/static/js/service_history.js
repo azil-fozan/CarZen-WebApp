@@ -76,6 +76,48 @@ function close_ticket(This){
 }
 
 
+function approve_cancel_appointment(This, option='approve'){
+    var row = This.closest('tr');
+    var ticket_id = row.find('[name="service_ticket_number"]').val();
+    var estimated_cost = 0
+    if (row.find('[name="estimated_cost"]').length){
+        estimated_cost = row.find('[name="estimated_cost"]').val();
+        if (estimated_cost===""){
+            return show_snackbar_message("You can not approve without estimate", 'warning',  'center');
+        }
+    }
+
+    $.ajax({
+        url: '/dashboards/approve_cancel_appointment/',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            ticket_id: ticket_id,
+            option: option,
+            estimated_cost: estimated_cost,
+            csrfmiddlewaretoken: window.csrfToken
+        },
+        beforeSend: function () {
+            $('.loader').show();
+        },
+        success: function (resp) {
+                if (resp.success) {
+                    $('#search_sevice_history').submit();
+                    show_snackbar_message(resp.message, 'success',  'center');
+                } else {
+                    show_snackbar_message(resp.message, 'warning',  'center');
+                }
+        },
+        error: function (resp) {
+            show_snackbar_message('Something went wrong.', 'error', 'center');
+        },
+        complete: function () {
+             $('.loader').hide();
+        }
+    });
+}
+
+
 $(document).ready(function () {
     load_services(1);
     $(document).on('submit', '#search_sevice_history', function (e) {
@@ -96,5 +138,11 @@ $(document).ready(function () {
     });
     $(document).on('click', '.close_ticket', function (e) {
         close_ticket($(this));
+    });
+    $(document).on('click', '.approve_appointment', function (e) {
+        approve_cancel_appointment($(this), "approve");
+    });
+    $(document).on('click', '.cancel_appointment', function (e) {
+        approve_cancel_appointment($(this), "reject");
     });
 });

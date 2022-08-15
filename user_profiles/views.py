@@ -1,3 +1,4 @@
+import datetime
 import os
 from os.path import exists
 import sys
@@ -260,6 +261,70 @@ class ProfileHistory(View):
         }
         self.response_data.update({
             'table_rows_html': render_to_string('service_table_rows.html', context=context),
+            'success': True
+        })
+        return JsonResponse(data=self.response_data)
+
+
+
+class Appointments(View):
+    def __init__(self):
+        super(Appointments, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(Appointments, self).dispatch(request, *args, **kwargs)
+
+    def get(self, request, *args, **kwargs):
+        my_profile = True
+        user_id = request.user.id
+
+        context = {
+            'page_headding': 'Service History',
+            'my_profile': my_profile,
+            'user_full_name': User.objects.filter(pk=user_id).first().get_user_full_name(),
+            # 'services': [],
+            'user_role': request.user.user_role
+        }
+        return render(request, 'appointments_listing.html', context)
+
+    def post(self, request, *args, **kwargs):
+        my_profile = True
+        user_id = request.user.id
+
+        search_str = request.POST.get('search_str')
+        if not user_id:
+            self.response_data['message'] = 'User Does not exist!'
+            return JsonResponse(data=self.response_data)
+        service_history = ServiceHistory.objects.filter(Q(owner_id=user_id)|Q(mech_id=user_id)).filter(appointed=False)
+
+        if search_str:
+            service_history = service_history.filter(Q(catagory__icontains=search_str) | Q(car__icontains=search_str))
+
+        service_history = service_history.order_by('-created_on')
+
+        service_history = service_history.values('pk', 'catagory', 'car', 'mech_id', 'owner_id',
+                                                 'service_info', 'created_on', 'appointment_datetime')
+
+        owners = set([_['owner_id'] for _ in service_history])
+        mechs = set([_['mech_id'] for _ in service_history])
+        user_names = User.objects.filter(pk__in=list(set(list(owners) + list(mechs))))
+        user_names = {int(_.pk): _.get_user_full_name() for _ in user_names}
+        for _ in service_history:
+            _.update({
+                'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
+                'customer': user_names[_['owner_id']],
+                'mechanic': user_names[_['mech_id']],
+                # 'appointment_datetime': datetime.datetime.strptime(_['appointment_datetime'], '%Y-%m-%d %H:%M:%S')
+            })
+
+        context = {
+            'services': list(service_history),
+            'my_profile': my_profile,
+            'user_role': request.user.user_role
+        }
+        self.response_data.update({
+            'table_rows_html': render_to_string('appointments_table_rows.html', context=context),
             'success': True
         })
         return JsonResponse(data=self.response_data)

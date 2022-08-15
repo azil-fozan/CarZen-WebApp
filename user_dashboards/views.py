@@ -157,6 +157,37 @@ class CloseTicket(View):
         return JsonResponse(self.response_data)
 
 
+class ApproveCancelAppointment(View):
+    def __init__(self):
+        super(ApproveCancelAppointment, self).__init__()
+        self.response_data = {'success': False}
+
+    def dispatch(self, request, *args, **kwargs):
+        return super(ApproveCancelAppointment, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        ticket_id = int(request.POST.get('ticket_id', 0))
+        operation = request.POST.get('option', '')
+        estimated_cost = request.POST.get('estimated_cost', '')
+
+        if not ticket_id:
+            self.response_data['message'] = 'Ticket does not exist!'
+            return JsonResponse(self.response_data)
+
+        hist_obj = ServiceHistory.objects.filter(pk=ticket_id).first()
+        if operation == 'approve':
+            hist_obj.appointed = True
+            hist_obj.expected_bill = estimated_cost
+            hist_obj.save()
+        elif operation == 'reject':
+            hist_obj.delete()
+
+        self.response_data['success'] = True
+        self.response_data['message'] = f'Service Ticket successfully {operation}!'
+
+        return JsonResponse(self.response_data)
+
+
 class Receipts(View):
     def __init__(self):
         super(Receipts, self).__init__()

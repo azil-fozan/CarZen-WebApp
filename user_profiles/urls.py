@@ -8,5 +8,5 @@ urlpatterns = [
     url(r'^edit_profile/$', login_required(views.EditProfile.as_view())),
     url(r'^profile_history/(?P<user_id>\d+)/$', login_required(views.ProfileHistory.as_view())),
     url(r'^profile_history/$', login_required(views.ProfileHistory.as_view())),
-    url(r'^appointments/$', login_required(views.ProfileHistory.as_view())),
+    url(r'^appointments/$', login_required(views.Appointments.as_view())),
 ]

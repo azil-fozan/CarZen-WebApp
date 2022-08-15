@@ -1,0 +1,36 @@
+{% load custom_template_tags %}
+{% for serv in services %}
+  <tr>
+      <th style="display: none"><input style="display: none" name="service_ticket_number" value="{{ serv.pk }}"/></th>
+      <th class="align-middle">
+        <span class="ms-2">{{ serv.catagory }}</span>
+      </th>
+      <td class="align-middle">
+        <span>{{ serv.car }}</span>
+      </td>
+      {% if my_profile %}
+          <td class="align-middle">
+            <span>{% if user_role == 1 %}{{ serv.customer }}{% else %}{{ serv.mechanic }}{% endif %}</span>
+          </td>
+      {% endif %}
+      <td class="align-middle">
+          <div type="datetime-local time_input">{{ serv.appointment_datetime }}</div>
+      </td>
+      {% ifequal user_role 1 %}
+          <td class="align-middle" style="color: {% ifequal serv.status "Closed" %}Green{% else %}Red{% endifequal  %};">
+              <input name="estimated_cost" class="form-control" value="" placeholder="cost"/>
+          </td>
+      {% endifequal %}
+      <td class="align-middle w-40">
+          <div class="listing_comment_box">{{ serv.service_info|default_if_none:"" }}</div>
+      </td>
+      <td class="align-middle col-1">
+        <h6 class="d-flex justify-content-between">
+            {% if user_role != 2 %}
+                <button class="btn btn-sm btn-outline-success mr-1 approve_appointment">Approve</button>
+            {% endif %}
+            <button class="btn btn-sm btn-outline-danger cancel_appointment">{% ifequal user_role 1 %}Reject{% else %}Cancel{% endifequal %}</button>
+        </h6>
+      </td>
+  </tr>
+{% endfor %}
