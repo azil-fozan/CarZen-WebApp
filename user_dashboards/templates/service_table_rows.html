@@ -19,7 +19,7 @@
         {% if serv.rating %}
             <span class="text-black-50" style="font-size: 25px;">{% for _ in serv.rating|times %}&#9733;{% endfor %}{% for _ in serv.rem_rating|times %}&#9734;{% endfor %}</span>
         {% else %}
-            <button class="btn btn-sm btn-outline-success rate_and_close">Rate & Close</button>
+            <button {% if not serv.eligible_to_rate %}disabled title="Rate in {{ serv.days_to_rate }} days" {% endif %} class="btn btn-sm btn-outline-success rate_and_close">Rate & Close</button>
         {% endif %}
         </h6>
       </td>

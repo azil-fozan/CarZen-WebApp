@@ -39,6 +39,8 @@ class ServiceHistory(models.Model):
     service_info = models.TextField(default=None)
     car = models.CharField(max_length=30, default=None, db_column='car_info')
     status = models.CharField(max_length=30, default='Open')
+    sentiment = models.CharField(max_length=30, default=None)
+    sentiment_owner = models.CharField(max_length=30, default=None)
     status_owner = models.CharField(max_length=30, default='Open')
     vehicle = models.IntegerField(default=0)
     appointment_datetime = models.DateTimeField(default=None)

@@ -1,7 +1,11 @@
 from BI import settings
+from BI.constants import POSITIVE_WORDS, NEGATIVE_WORDS
 from user_dashboards.models import Bill
 from tempfile import NamedTemporaryFile
+from asyncthreads import reactor
 import boto3
+
+from user_profiles.models import ServiceHistory
 
 
 def get_receipt_product_data(receipt_id=0, data=None):
@@ -60,3 +64,27 @@ def predict_sentiment(text):
 # predict_sentiment(test_sentence1)
 # test_sentence2 = "This is the worst flight experience of my life!"
 # predict_sentiment(test_sentence2)
+
+def call_func_async(_func, **kwargs):
+    r = reactor.Reactor()
+    r.start()
+    r.call_in_thread(_func, (kwargs))
+    r.shutdown()
+
+def get_sentiment_from_comment(service_id, user_role, comment):
+    try:
+        words = comment.split(' ')
+        positivity = 0
+        negativity = 0
+        for word in words:
+            if word.lower() in POSITIVE_WORDS:
+                positivity += 1
+            if word.lower() in NEGATIVE_WORDS:
+                negativity += 1
+        result = 'negative' if negativity > positivity else 'positive'
+        if user_role == 1:
+            ServiceHistory.objects.all(pk=service_id).update(sentiment=result)
+        else:
+            ServiceHistory.objects.all(pk=service_id).update(sentiment_owner=result)
+    except:
+        pass

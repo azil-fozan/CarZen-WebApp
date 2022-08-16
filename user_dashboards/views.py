@@ -18,7 +18,7 @@ from user_dashboards.models import *
 from datetime import datetime
 from user_dashboards.constants import *
 from user_dashboards.queries import RECEIPTS_MAIN_TABLE, RECEIPTS_TOTAL_AMOUNTS
-from user_dashboards.utils import get_receipt_product_data, download_file
+from user_dashboards.utils import get_receipt_product_data, download_file, get_sentiment_from_comment, call_func_async
 from user_profiles.models import MechanicDetail, ServiceHistory
 
 
@@ -135,14 +135,23 @@ class CloseTicket(View):
             return JsonResponse(self.response_data)
 
         hist_obj = ServiceHistory.objects.filter(pk=ticket_id).first()
+
+        try:
+            if comments:
+                call_func_async(get_sentiment_from_comment, service_id=hist_obj.pk, user_role=request.user.user_role, comment=comments)
+        except:
+            pass
+
         if request.user.user_role == 1:
             hist_obj.rating = rating
             hist_obj.status = 'Closed'
             hist_obj.comments = comments if comments else None
+            # hist_obj.sentiment = sentiment
         else:
             hist_obj.rating_owner = rating
             hist_obj.status_owner = 'Closed'
             hist_obj.comments_owner = comments if comments else None
+            # hist_obj.sentiment_owner = sentiment
 
         hist_obj.save()
 

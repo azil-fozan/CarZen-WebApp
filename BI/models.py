@@ -43,7 +43,7 @@ class User(AbstractBaseUser):
     rating = models.IntegerField(db_column='rating', blank=True, default=0)
     date_created = models.DateTimeField(default=timezone.now)
     last_login = models.DateTimeField(blank=True)
-    admin = models.ForeignKey('User', null=True, db_column='admin', on_delete=CASCADE)
+    # admin = models.ForeignKey('User', null=True, db_column='admin', on_delete=CASCADE)
     phone_number = models.CharField(max_length=40, null=True, blank=True)
     address = models.CharField(max_length=50, null=True, blank=True)
     occupation = models.CharField(max_length=40, null=True, blank=True)

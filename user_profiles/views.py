@@ -241,11 +241,14 @@ class ProfileHistory(View):
         user_names = User.objects.filter(pk__in=list(set(list(owners) + list(mechs))))
         user_names = {int(_.pk): _.get_user_full_name() for _ in user_names}
         for _ in service_history:
+            days_to_eligible = ((_['created_on'] + datetime.timedelta(days=15)).replace(tzinfo=None) - datetime.datetime.now()).days
             _.update({
                 'created_on': _['created_on'].strftime(GENERAL_DATETIME_FORMAT),
                 'rem_rating': TOTAL_RATING - (_['rating_owner'] if request.user.user_role == 2 else _['rating']),
                 'customer': user_names[_['owner_id']],
                 'mechanic': user_names[_['mech_id']],
+                'eligible_to_rate': days_to_eligible <= 0,
+                'days_to_rate': days_to_eligible,
             })
 
             # history will always show rated by owner

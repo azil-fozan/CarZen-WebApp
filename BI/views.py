@@ -103,7 +103,7 @@ class Login(View):
             #     user.set_password(password)
             #     user.save()
             #     user = authenticate_user(request=request, username=username, password=password)
-            if user and (user.user_role == user_role or user.user_role == 3):
+            if user and (user.user_role == user_role):
                 auth_login(request, user)
                 msg = "Logged in!"
                 self.response_data['success'] = True
