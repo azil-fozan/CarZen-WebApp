@@ -9,7 +9,7 @@ PROJECT_DIR = os.path.dirname(__file__)
 SECRET_KEY = '$60^1ruaokuo*ddn(ntp$*69e30x)44c+v#-ug^yh49#)5#-rz'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # SESSION_COOKIE_SECURE = True
 
