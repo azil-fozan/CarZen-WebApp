@@ -3,6 +3,9 @@ from django.db.models import CASCADE
 from django.db import models
 import datetime
 
+from BI.constants import DEFAULT_CAR_NUMBER
+
+
 def get_utc_time():
     return datetime.datetime.utcnow()
 
@@ -38,6 +41,7 @@ class ServiceHistory(models.Model):
     comments_owner = models.TextField(default=None)
     service_info = models.TextField(default=None)
     car = models.CharField(max_length=30, default=None, db_column='car_info')
+    car_number = models.CharField(max_length=8, default=DEFAULT_CAR_NUMBER, db_column='car_number')
     status = models.CharField(max_length=30, default='Open')
     sentiment = models.CharField(max_length=30, default=None)
     sentiment_owner = models.CharField(max_length=30, default=None)

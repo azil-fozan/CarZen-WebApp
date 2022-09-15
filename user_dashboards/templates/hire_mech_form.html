@@ -105,8 +105,17 @@
                                         <input class="form-control my-2" required type="datetime-local" name="appointment_datetime" value=""/>
                                   </div>
                               </div>
-                              <h6>Car/Vehicle Name<span class="red-font">*</span></h6>
-                                <input class="form-control my-2" type="text" required name="car_info" />
+                              <div class="d-flex justify-content-center">
+                                  <span class="col-6 pl-0">
+                                      <h6>Car/Vehicle Name<span class="red-font">*</span></h6>
+                                    <input class="form-control my-2" type="text" required name="car_info" />
+                                  </span>
+                                  <span class="col-6 px-0">
+                                  <h6>Car/Vehicle Registeration<span class="red-font">*</span></h6>
+                                    <input class="form-control my-2" type="text" required name="car_number" placeholder="AAA-0000"/>
+                                  </span>
+                              </div>
+
                               <h6>Service Detail (optional)<span class="red-font">*</span></h6>
                                   <textarea class="form-control my-2" rows="5" required name="service_info"></textarea>
                             <div class="d-flex justify-content-center">

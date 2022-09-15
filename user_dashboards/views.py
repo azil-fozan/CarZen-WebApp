@@ -12,7 +12,7 @@ from openpyxl import load_workbook
 from openpyxl.styles.borders import Border, Side
 from num2words import num2words
 
-from BI.constants import USER_ROLES, TOTAL_RATING
+from BI.constants import USER_ROLES, TOTAL_RATING, DEFAULT_CAR_NUMBER
 from BI.utilities import execute_read_query
 from user_dashboards.models import *
 from datetime import datetime
@@ -104,12 +104,20 @@ class HireMechanic(View):
 
         catagory = request.POST.get('catagory')
         car_info = request.POST.get('car_info')
+        car_number = request.POST.get('car_number', DEFAULT_CAR_NUMBER)
+        if car_number != DEFAULT_CAR_NUMBER:
+            existing_car = ServiceHistory.objects.filter(car_number=car_number).exclude(owner_id=request.user.pk).first()
+            if existing_car:
+                self.response_data['success'] = False
+                self.response_data['message'] = 'Car already added by another customer! Please contact support if you own it'
+                return JsonResponse(self.response_data)
+
         appointment_datetime = request.POST.get('appointment_datetime')
         service_info = request.POST.get('service_info')
 
         hist_obj = ServiceHistory(mech_id=mech_id, owner_id=request.user.pk, catagory=catagory,
                                   car=car_info, service_info=service_info, appointment_datetime=appointment_datetime,
-                                  appointed=False)
+                                  car_number=car_number, appointed=False)
         hist_obj.save()
         self.response_data['success'] = True
         self.response_data['message'] = 'Service Ticket successfully opened!'

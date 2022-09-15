@@ -146,7 +146,7 @@ class SignUp(View):
             msg = 'User aleady Exists, please login!'
         elif username and password and re.fullmatch(EMAIL_RE_PATTERN, email):
             new_user_object = User.objects.create(email=email, username=username, first_name=first_name,
-                                                  last_name=last_name, user_role=user_role,
+                                                  last_name=last_name, full_name=f'{first_name} {last_name}', user_role=user_role,
                                                   address=address, is_active=False)
             if not is_mechanic:
                 new_user_object.occupation = expertise

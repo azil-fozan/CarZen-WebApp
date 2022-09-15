@@ -1,6 +1,7 @@
 function hire_mech(This){
     var catagory = This.find('[name="catagory"]').val(),
         car_info = This.find('[name="car_info"]').val(),
+        car_number = This.find('[name="car_number"]').val(),
         appointment_datetime = This.find('[name="appointment_datetime"]').val(),
         service_info = This.find('[name="service_info"]').val();
 
@@ -11,6 +12,7 @@ function hire_mech(This){
         data: {
             catagory: catagory,
             car_info: car_info,
+            car_number: car_number,
             appointment_datetime: moment(appointment_datetime).format('YYYY-MM-DD hh:mm'),
             service_info: service_info,
             csrfmiddlewaretoken: window.csrfToken
@@ -21,7 +23,7 @@ function hire_mech(This){
         success: function (resp) {
                 if (resp.success) {
                     // $('#service_sidebar_link').click();
-                    window.location = $('#service_sidebar_link').attr('href');
+                    window.location = $('#appt_sidebar_link').attr('href');
                     show_snackbar_message(resp.message, 'success',  'center');
                 } else {
                     show_snackbar_message(resp.message, 'warning',  'center');
