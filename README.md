@@ -1,11 +1,11 @@
-CarZen - WebApp
+# CarZen - WebApp
 
-AI powered Car servicing medium
+## AI powered Car servicing medium
 
 An app that helps connecting Car oweners and Car Serviceing offering companies
 
 
-FEATURES:
+## FEATURES:
 
  - CarZen can create and keep track of car servicing
 
@@ -23,7 +23,7 @@ FEATURES:
 
 
 
-Keep track of:
+## Keep track of:
 
  - billings
 
@@ -35,6 +35,6 @@ Keep track of:
 
 
 
-Have more on your mind?
+## Have more on your mind?
 
 Checkout a branch now and start coding :)
