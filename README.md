@@ -38,3 +38,26 @@ An app that helps connecting Car oweners and Car Serviceing offering companies
 ## Have more on your mind?
 
 Checkout a branch now and start coding :)
+
+
+
+
+
+## Installation guide:
+- Clone the repo
+- Setup python
+- Install pip and django 3.0
+- create virtual enviornment
+- run the following in terminal:
+```
+pip install -r requirements.txt
+```
+- Create and host mySQL DB on local or any hosting service
+- add database host and credentials in BI/settings.py file
+- run the following in terminal:
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py runserver <port to run on>
+```
+Its live! hit http://127.0.0.1:port/
